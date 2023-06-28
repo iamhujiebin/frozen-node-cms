@@ -182,7 +182,6 @@ const Music = () => {
         http.get(`/music/author/search?q=${value}`).then(r => {
             const list = r.data ? r.data : []
             setSearchListData(list)
-            showDrawer()
         }).catch(e => message.error("fail").then())
     }
     const downMusic = (id) => {
