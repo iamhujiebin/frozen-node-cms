@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useRef} from "react";
 import Vap from 'video-animation-player'
 import config from './demo.json'
 import demo from './demo.mp4'
