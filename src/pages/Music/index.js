@@ -194,6 +194,7 @@ const Music = () => {
     const downMusicList = (id, name, desc, pic) => {
         http.post(`/music/author/down`, {id: id, name: name, desc: desc, pic: pic}).then(r => {
             setOpen2(false)
+            showDrawer()
         }).catch(e => message.error("fail").then())
     }
     return (
