@@ -11,7 +11,6 @@ import woman from "@/assets/woman.png"
 function Test() {
     let vapPlayer = useRef(null);
     let vapPlayer2 = useRef(null);
-    const [name,setName] = useState("皇马嗯")
 
     useEffect(() => {
         vapPlayer.current = new Vap().play(Object.assign({}, {
@@ -58,14 +57,13 @@ function Test() {
             // 播放起始时间点(秒)
         }, {
             // 融合信息（图片/文字）,同素材生成工具生成的配置文件中的srcTag所对应，比如[imgUser] => imgUser
-            name: name,
+            name: "皇马人",
         }))
-    }, [name]);
+    });
     return (
         <>
             <div ref={vapPlayer}/>
             <div ref={vapPlayer2}/>
-            <p>{name}</p>
         </>
     )
 }
