@@ -41,6 +41,7 @@
   <!-- 加载第三发包的 CDN 链接 -->
   <% htmlWebpackPlugin.options.cdn.js.forEach(cdnURL=> { %>
     <script src="<%= cdnURL %>"></script>
+    <script src="//s1.yy.com/ued_web_static/lib/jszip/3.1.4/??jszip.min.js,jszip-utils.min.js" charset="utf-8"></script>
     <% }) %>
 </body>
 
