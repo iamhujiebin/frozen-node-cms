@@ -3,7 +3,7 @@ import Vap from 'video-animation-player'
 import SVGA from 'svgaplayerweb'
 import config from './demo.json'
 import demo from './demo.mp4'
-import config2 from './vapc.json'
+import config2 from './video.json'
 import demo2 from './video.mp4'
 import man from "@/assets/man.png"
 import woman from "@/assets/woman.png"
@@ -20,7 +20,7 @@ function Test() {
     let svgaParser2 = useRef(null)
 
     useEffect(() => {
-        vapPlayer.current = new Vap().play(Object.assign({}, {
+        new Vap().play(Object.assign({}, {
             container: vapPlayer.current,
             // 素材视频链接
             src: demo,
@@ -45,7 +45,7 @@ function Test() {
             textAnchor: 'mengyin',
             type: 2
         }))
-        vapPlayer2.current = new Vap().play(Object.assign({}, {
+       new Vap().play(Object.assign({}, {
             container: vapPlayer2.current,
             // 素材视频链接
             src: demo2,

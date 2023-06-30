@@ -6,14 +6,11 @@ import woman from '@/assets/woman.png'
 import {observer} from 'mobx-react-lite'
 import {
     LogoutOutlined,
-    HomeOutlined,
-    DiffOutlined,
-    EditOutlined,
-    FormOutlined,
     VideoCameraAddOutlined,
     RedditCircleFilled,
     ForwardOutlined,
-    InstagramOutlined
+    InstagramOutlined,
+    PlayCircleOutlined
 } from '@ant-design/icons'
 import {Link, Outlet, useLocation, useNavigate} from 'react-router-dom'
 import {useStore} from '@/store'
@@ -63,6 +60,11 @@ const CMSLayout = () => {
             key: '/music',
             icon: <ForwardOutlined/>,
             label: (<Link to='/music'>音乐馆</Link>)
+        },
+        {
+            key: '/svgavap',
+            icon: <PlayCircleOutlined/>,
+            label: (<Link to='/svgavap'>SVGA-VAP</Link>)
         },
         // {
         //     key: '/antddemo',

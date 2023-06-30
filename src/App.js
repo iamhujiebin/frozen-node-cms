@@ -16,6 +16,7 @@ import {lazy, Suspense} from 'react'
 import Test from "@/pages/Test";
 import Album from "@/pages/Album";
 import Music from "@/pages/Music";
+import SvgaVap from "@/pages/SvgaVap";
 
 const Detail = lazy(() => import("@/pages/Detail"))
 const Login = lazy(() => import('@/pages/Login'))
@@ -48,6 +49,7 @@ function App() {
                         <Route path='album' element={<Album/>}/>
                         <Route path='antddemo' element={<AntdDemo/>}/>
                         <Route path='music' element={<Music/>}/>
+                        <Route path='svgavap' element={<SvgaVap/>}/>
                     </Route>
                     <Route path='/login' element={<Login/>}/>
                     <Route path='/detail' element={<Detail/>}/>
