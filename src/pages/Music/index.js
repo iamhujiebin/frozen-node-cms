@@ -1,5 +1,6 @@
-import {Row, Col, Button, Drawer, message, Input, Avatar, List, Radio} from 'antd';
-import ReactPlayer from "react-player";
+import {Row, Col, Button, Drawer, message, Input, Avatar, List, Radio, Tooltip} from 'antd'
+import ReactPlayer from "react-player"
+import {DeleteTwoTone} from '@ant-design/icons'
 // import {MusicList} from "./musicList";
 import "./index.scss"
 import {useEffect, useState} from "react";
@@ -197,6 +198,11 @@ const Music = () => {
             showDrawer()
         }).catch(e => message.error("fail").then())
     }
+    const delMusic = (id) => {
+        http.delete(`/music/${id}`).then(r => {
+            fetchMusicList()
+        }).catch(e => message.error("fail").then())
+    }
     return (
         <>
             <Drawer title="音乐清单" placement="right" onClose={onClose} open={open}>
@@ -213,12 +219,6 @@ const Music = () => {
                         </Radio.Button>
                     ))}
                 </Radio.Group>
-                {/*{*/}
-                {/*    musicList.map((item, index) => (*/}
-                {/*        <p className={'pick'} key={index}*/}
-                {/*           onClick={() => chooseSong(index)}>{item.name}</p>*/}
-                {/*    ))*/}
-                {/*}*/}
                 <List
                     itemLayout="horizontal"
                     dataSource={musicList}
@@ -228,6 +228,9 @@ const Music = () => {
                                 title={<a onClick={() => chooseSong(index)}>{item.name}</a>}
                                 description={`歌手:${item.artist}`}
                             />
+                            <Tooltip title="delete">
+                                <Button shape="circle" icon={<DeleteTwoTone/>} onClick={() => delMusic(item.id)}/>
+                            </Tooltip>
                         </List.Item>
                     )}
                 />
