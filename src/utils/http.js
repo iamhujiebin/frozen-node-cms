@@ -7,9 +7,27 @@ const http = axios.create({
     timeout: 100000,
 })
 
+const httpRaw = axios.create({
+    // baseURL: 'http://geek.itheima.net/v1_0',
+    baseURL: process.env.REACT_APP_BASE_URL,
+    timeout: 100000,
+})
+
 // 请求拦截器
 // congfig: http的config
 http.interceptors.request.use((config) => {
+    const token = getToken()
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+}, (error) => {
+    return Promise.reject(error)
+})
+
+// 请求拦截器
+// congfig: http的config
+httpRaw.interceptors.request.use((config) => {
     const token = getToken()
     if (token) {
         config.headers.Authorization = `Bearer ${token}`
@@ -34,4 +52,16 @@ http.interceptors.response.use((response) => {
     return Promise.reject(error) // 会throw error，可以被catch到
 })
 
-export {http}
+// 响应拦截器
+httpRaw.interceptors.response.use((response) => {
+    return response.data
+}, (error) => {
+    if (error.response.status === 401) {
+        console.log('401:', error.response)
+        clearToken()
+        history.push('/login')
+    }
+    return Promise.reject(error) // 会throw error，可以被catch到
+})
+
+export {http, httpRaw}

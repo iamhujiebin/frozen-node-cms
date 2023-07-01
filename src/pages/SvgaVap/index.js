@@ -1,8 +1,9 @@
 import {useRef, useState} from "react";
 import Vap from 'video-animation-player'
 import SVGA from 'svgaplayerweb'
-import {Col, Input, Row, Select, Tooltip} from "antd";
-import {InfoCircleOutlined, UserOutlined} from '@ant-design/icons';
+import {Col, Input, message, Row, Select} from "antd";
+import MP4Box from "mp4box"
+import {httpRaw} from "@/utils";
 
 const {Search} = Input;
 
@@ -10,12 +11,18 @@ function SvgaVap() {
     let svgaPlayer = useRef(null)
     let svgaParser = useRef(null)
     let vapPlayer = useRef(null)
+    const inputFile = useRef(null)
     const [svgaVap, setSvgaVap] = useState("svga")
-    const [config, setConfig] = useState("")
+    const [loading, setLoading] = useState(false)
     const handleChange = (value) => {
         setSvgaVap(value)
     }
+    const vapLoadError = (e) => {
+        alert("vapLoadError:" + e)
+        setLoading(false)
+    }
     const onSearch = (url) => {
+        setLoading(true)
         if (svgaVap === 'svga') {
             svgaParser.current = new SVGA.Parser()
             svgaPlayer.current = new SVGA.Player('#demoCanvas')
@@ -23,27 +30,73 @@ function SvgaVap() {
             svgaParser.current.load(url, function (videoItem) {
                 svgaPlayer?.current?.setVideoItem(videoItem)
                 svgaPlayer?.current?.startAnimation()
+                setLoading(false)
+            }, function (e) {
+                message.error("svga err:" + e)
+                setLoading(false)
             })
         }
         if (svgaVap === 'vap') {
-            new Vap().play(Object.assign({}, {
-                container: vapPlayer.current,
-                src: url,
-                config: config,
-                loop: true,
-                beginPoint: 0,
-                accurate: true
-            }, {}))
+            let config2 = {}
+            httpRaw.post("/vap/vapc", {"mp4": url}).then(config => {
+                let vap = new Vap().play(Object.assign({}, {
+                    container: vapPlayer.current,
+                    src: url,
+                    config: config,
+                    loop: false,
+                    beginPoint: 0,
+                    accurate: true,
+                    onLoadError: vapLoadError,
+                }, {})).on('ended', () => {
+                    // 结束后清理
+                    vap = null
+                    const divElement = vapPlayer.current;
+                    while (divElement.firstChild) {
+                        divElement.removeChild(divElement.firstChild);
+                    }
+                    console.log('play ended')
+                })
+                setLoading(false)
+            }).catch(e => {
+                message.error("vap err:" + e)
+                setLoading(false)
+            })
         }
+    }
+    const onFile = (e) => {
+        const file = e.target.files[0];
+        const fileReader = new FileReader();
+
+        fileReader.onload = function () {
+            const arrayBuffer = fileReader.result;
+            arrayBuffer.fileStart = 0
+
+            let mp4box = MP4Box.createFile()
+            mp4box.onError = function (e) {
+                console.log("err:", e)
+            };
+            mp4box.onReady = function (info) {
+                console.log("info:", info)
+            };
+            mp4box.onMoovStart = function () {
+                console.log("Starting to receive File Information");
+            }
+            mp4box.appendBuffer(arrayBuffer)
+            mp4box.flush()
+        };
+
+        fileReader.readAsArrayBuffer(file);
     }
     return (
         <div>
+            <input onChange={onFile} ref={inputFile} type="file"/>
+            <p>console查看文件信息</p>
             <Row justify='center' type='flex'>
                 <Col>
                     <Select
                         defaultValue={svgaVap}
                         style={{
-                            width: 1000
+                            minWidth: 100
                         }}
                         onChange={handleChange}
                         options={[
@@ -59,36 +112,14 @@ function SvgaVap() {
                     />
                 </Col>
             </Row>
-            <Row justify='center' type='flex' className='text-center'
-                 style={svgaVap === 'vap' ? {} : {display: "none"}}>
-                <Col>
-                    <Input
-                        style={{
-                            width: 1000
-                        }}
-                        placeholder="config url"
-                        prefix={<UserOutlined className="site-form-item-icon"/>}
-                        suffix={
-                            <Tooltip title="vap config url">
-                                <InfoCircleOutlined
-                                    style={{
-                                        color: 'rgba(0,0,0,.45)',
-                                    }}
-                                />
-                            </Tooltip>
-                        }
-                        onChange={(e) => setConfig(e.target.value)}
-                    />
-                </Col>
-            </Row>
             <Row justify='center' type='flex' className='text-center'>
                 <Col>
                     <Search
                         style={{
-                            width: 1000
+                            minWidth: 500
                         }}
                         placeholder="input svga or vap link"
-                        allowClear
+                        loading={loading}
                         enterButton="Play"
                         size="large"
                         onSearch={onSearch}

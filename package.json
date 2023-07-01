@@ -18,6 +18,8 @@
     "mobx": "^6.6.1",
     "mobx-react-lite": "^3.4.0",
     "moment": "^2.29.4",
+    "mp4-box-encoding": "^1.4.1",
+    "mp4box": "^0.5.2",
     "pubsub-js": "^1.9.4",
     "quill-emoji": "^0.2.0",
     "quill-image-drop-module": "^1.0.3",
