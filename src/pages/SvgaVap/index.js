@@ -86,7 +86,7 @@ function SvgaVap() {
                             }
                         })
                     }
-                    console.log("source2:",source2)
+                    console.log("source2:", source2)
                     vap = new Vap().play(Object.assign({}, {
                         container: vapPlayer.current,
                         src: url,
@@ -94,6 +94,8 @@ function SvgaVap() {
                         loop: true,
                         beginPoint: 0,
                         accurate: true,
+                        width: config?.info?.w ? config.info.w : 100,
+                        height: config?.info?.h ? config.info.h : 100,
                         onLoadError: vapLoadError,
                     }, source2)).on('ended', () => {
                         console.log('play ended')
