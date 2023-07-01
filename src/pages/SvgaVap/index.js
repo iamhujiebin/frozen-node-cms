@@ -3,14 +3,39 @@ import Vap from 'video-animation-player'
 import SVGA from 'svgaplayerweb'
 import {Col, Input, message, Row, Select} from "antd";
 import MP4Box from "mp4box"
-import {httpRaw} from "@/utils";
+import man from "@/assets/man.png"
 
 const {Search} = Input;
+
+function readVapc(data) {
+    let offset = 0;
+    while (offset < data.byteLength) {
+        const boxSize = data.getUint32(offset);
+        const boxType = String.fromCharCode(
+            data.getUint8(offset + 4),
+            data.getUint8(offset + 5),
+            data.getUint8(offset + 6),
+            data.getUint8(offset + 7)
+        );
+        if (boxType === 'vapc') {
+            const boxData = new Uint8Array(data.buffer, offset + 8, boxSize - 8);
+            // 将Uint8Array转换为字符串
+            const str = String.fromCharCode.apply(null, boxData);
+
+            // 将字符串转换为JSON对象
+            const json = JSON.parse(str);
+            return json
+        }
+
+        offset += boxSize;
+    }
+}
 
 function SvgaVap() {
     let svgaPlayer = useRef(null)
     let svgaParser = useRef(null)
     let vapPlayer = useRef(null)
+    let vap = null
     const inputFile = useRef(null)
     const [svgaVap, setSvgaVap] = useState("svga")
     const [loading, setLoading] = useState(false)
@@ -37,30 +62,48 @@ function SvgaVap() {
             })
         }
         if (svgaVap === 'vap') {
-            let config2 = {}
-            httpRaw.post("/vap/vapc", {"mp4": url}).then(config => {
-                let vap = new Vap().play(Object.assign({}, {
-                    container: vapPlayer.current,
-                    src: url,
-                    config: config,
-                    loop: false,
-                    beginPoint: 0,
-                    accurate: true,
-                    onLoadError: vapLoadError,
-                }, {})).on('ended', () => {
-                    // 结束后清理
-                    vap = null
-                    const divElement = vapPlayer.current;
-                    while (divElement.firstChild) {
-                        divElement.removeChild(divElement.firstChild);
+            // 先清理之前播放的
+            const divElement = vapPlayer.current;
+            while (divElement.firstChild) {
+                divElement.removeChild(divElement.firstChild);
+            }
+            vap = null
+            let config = {}
+            // 获取mp4文件内容并解析
+            fetch(url)
+                .then(response => response.arrayBuffer())
+                .then(buffer => {
+                    const data = new DataView(buffer);
+                    config = readVapc(data)
+                    let source2 = {}
+                    if (config.src?.length > 0) {
+                        config.src.map(item => {
+                            if (item.srcType === "img") {
+                                source2[item.srcTag] = man
+                            }
+                            if (item.srcType === "txt") {
+                                source2[item.srcTag] = "jiebin"
+                            }
+                        })
                     }
-                    console.log('play ended')
+                    console.log("source2:",source2)
+                    vap = new Vap().play(Object.assign({}, {
+                        container: vapPlayer.current,
+                        src: url,
+                        config: config,
+                        loop: true,
+                        beginPoint: 0,
+                        accurate: true,
+                        onLoadError: vapLoadError,
+                    }, source2)).on('ended', () => {
+                        console.log('play ended')
+                    })
+                    setLoading(false)
                 })
-                setLoading(false)
-            }).catch(e => {
-                message.error("vap err:" + e)
-                setLoading(false)
-            })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
         }
     }
     const onFile = (e) => {
