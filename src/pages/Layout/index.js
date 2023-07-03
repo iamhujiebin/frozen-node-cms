@@ -10,7 +10,8 @@ import {
     RedditCircleFilled,
     ForwardOutlined,
     InstagramOutlined,
-    PlayCircleOutlined
+    PlayCircleOutlined,
+    WechatOutlined
 } from '@ant-design/icons'
 import {Link, Outlet, useLocation, useNavigate} from 'react-router-dom'
 import {useStore} from '@/store'
@@ -65,6 +66,11 @@ const CMSLayout = () => {
             key: '/svgavap',
             icon: <PlayCircleOutlined/>,
             label: (<Link to='/svgavap'>SVGA-VAP</Link>)
+        },
+        {
+            key: '/hilo',
+            icon: <WechatOutlined />,
+            label: (<Link to='/hilo'>Hilo</Link>)
         },
         // {
         //     key: '/antddemo',

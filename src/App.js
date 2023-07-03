@@ -17,6 +17,7 @@ import Test from "@/pages/Test";
 import Album from "@/pages/Album";
 import Music from "@/pages/Music";
 import SvgaVap from "@/pages/SvgaVap";
+import Hilo from "@/pages/Hilo";
 
 const Detail = lazy(() => import("@/pages/Detail"))
 const Login = lazy(() => import('@/pages/Login'))
@@ -54,6 +55,7 @@ function App() {
                     <Route path='/login' element={<Login/>}/>
                     <Route path='/detail' element={<Detail/>}/>
                     <Route path='/test' element={<Test/>}/>
+                    <Route path='/hilo' element={<Hilo/>}/>
                 </Routes>
             </Suspense>
         </HistoryRouter>
