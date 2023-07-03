@@ -1,0 +1,22 @@
+.rank {
+    width: 120px;
+    height: 50px;
+    border-radius: 10px;
+}
+
+.rank p {
+    text-align: center;
+    color: white;
+    padding-top: 3px;
+}
+
+.rankP {
+    text-align: center;
+    color: white;
+    padding-top: 3px;
+}
+
+.avatar {
+    width: 20px;
+    height: 20px;
+}
