@@ -76,7 +76,7 @@ function SvgaVap() {
                     const data = new DataView(buffer);
                     config = readVapc(data)
                     let source2 = {}
-                    if (config.src?.length > 0) {
+                    if (config?.src?.length > 0) {
                         config.src.map(item => {
                             if (item.srcType === "img") {
                                 source2[item.srcTag] = man
