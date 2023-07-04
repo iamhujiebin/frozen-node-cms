@@ -1,36 +1,55 @@
-const formatTime = (value) => {
-    const minArray = value.toString().split(':');
-    const min = minArray[0];
-    if (minArray.length > 1) {
-        const secArray = minArray[1].split('.');
-        const sec = secArray[0];
-        const mill = secArray[1];
-        return Number(min * 60) + Number(sec) + Number(mill / 100);
+const crc = require('crc');
+
+function stringToUint8Array(str) {
+    let arr = [];
+    for (var i = 0, j = str.length; i < j; ++i) {
+        arr.push(str.charCodeAt(i));
     }
+
+    let tmpUint8Array = new Uint8Array(arr);
+    return tmpUint8Array
 }
 
-const lyric = "[00:00.00] 作词 : 九把刀\n" +
-    "[00:00.15] 作曲 : 木村充利\n" +
-    "[00:00.30] 编曲 : 侯志坚/林冠吟\n" +
-    "[00:00.45] 制作人 : 薛忠铭\n" +
-    "[00:00.60]\n" +
-    "[00:18.21]又回到最初的起点\n" +
-    "[00:21.16]记忆中你青涩的脸\n" +
-    "[00:24.31]我们终于\n" +
-    "[00:25.95]来到了这一天\n" +
-    "[00:30.41]桌垫下的老照片\n" +
-    "[00:33.56]无数回忆连结\n" +
-    "[00:35.76]今天男孩要赴女孩最后的约"
+function dataViewToBytes(dataView) {
+    const bytes = [];
+    for (let i = 0; i < dataView.byteLength; i++) {
+        bytes.push(dataView.getUint8(i));
+    }
+    return bytes;
+}
 
-const lyricArray = lyric.split('\n').map(i => i.replace('[', '').split(']'));
+const msgType = 1
+const serialNum = 1n
+const now = 11111n
 
-console.log(lyricArray)
+const msg = 'hello'
+let msgArr = stringToUint8Array(msg)
 
-const lyricsMap = new Map(lyricArray);
-console.log(lyricsMap)
-const lyricsTimeArray = Array.from(lyricsMap.keys());
-console.log(lyricsTimeArray)
+// 创建一个8字节的字节流
+const byteArray = new Uint8Array(26);
+let dataLen = msgArr.length
+const dataView = new DataView(byteArray.buffer);
+dataView.setUint16(0, 1, false)
+dataView.setUint16(2, msgType, false)
+dataView.setBigUint64(6, serialNum, false)
+dataView.setBigUint64(14, now, false)
+dataView.setUint32(22, dataLen, false)
 
-lyricsTimeArray.forEach((time) => {
-    console.log(time, formatTime(time))
-})
+// 创建新的字节流，将两个字节流拼接起来
+const combinedBuffer = new Uint8Array(byteArray.length + msgArr.length + 4);
+combinedBuffer.set(byteArray, 0);
+combinedBuffer.set(msgArr, byteArray.length);
+
+
+let checkSum = crc.crc32(combinedBuffer)
+console.log("cs:", checkSum)
+const finalView = new DataView(combinedBuffer.buffer);
+console.log(finalView)
+finalView.setUint32(26 + dataLen, checkSum)
+const decoder = new TextDecoder('utf-8');
+const str = decoder.decode(finalView);
+console.log(str)
+console.log(dataViewToBytes(finalView))
+
+var timestamp = Math.floor(Date.now() / 1000);
+console.log(timestamp)

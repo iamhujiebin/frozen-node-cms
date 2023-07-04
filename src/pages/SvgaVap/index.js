@@ -35,7 +35,6 @@ function SvgaVap() {
     let svgaPlayer = useRef(null)
     let svgaParser = useRef(null)
     let vapPlayer = useRef(null)
-    let vap = null
     const inputFile = useRef(null)
     const [svgaVap, setSvgaVap] = useState("svga")
     const [loading, setLoading] = useState(false)
@@ -67,7 +66,6 @@ function SvgaVap() {
             while (divElement.firstChild) {
                 divElement.removeChild(divElement.firstChild);
             }
-            vap = null
             let config = {}
             // 获取mp4文件内容并解析
             fetch(url)
@@ -76,6 +74,7 @@ function SvgaVap() {
                     const data = new DataView(buffer);
                     config = readVapc(data)
                     let source2 = {}
+                    let color = ""
                     if (config?.src?.length > 0) {
                         config.src.map(item => {
                             if (item.srcType === "img") {
@@ -83,11 +82,12 @@ function SvgaVap() {
                             }
                             if (item.srcType === "txt") {
                                 source2[item.srcTag] = "jiebin"
+                                color = item.color ? item.color : 'white'
                             }
                         })
                     }
-                    console.log("source2:", source2)
-                    vap = new Vap().play(Object.assign({}, {
+                    console.log("source2 & color", source2, color)
+                    let vap = new Vap().play(Object.assign({}, {
                         container: vapPlayer.current,
                         src: url,
                         config: config,
@@ -97,6 +97,7 @@ function SvgaVap() {
                         width: config?.info?.w ? config.info.w : 100,
                         height: config?.info?.h ? config.info.h : 100,
                         onLoadError: vapLoadError,
+                        fontStyle: {color: color},
                     }, source2)).on('ended', () => {
                         console.log('play ended')
                     })
