@@ -1,5 +1,6 @@
-import {Swiper, Grid} from 'antd-mobile';
+import {Swiper, Grid, Divider} from 'antd-mobile';
 import Rank from "@/pages/Hilo/Rank";
+import Group from "@/pages/Hilo/Group";
 
 const banners = [
     'https://image.whoisamy.shop/hilo/manager/c637ff988b6445d4b3af80b5ed1bd73d.png',
@@ -39,10 +40,12 @@ const avatars6 = [
     '\thttps://image.whoisamy.shop/hilo/avatar/3af7d9c821a44bbd92c598be54440b74-20230518-1684451257709.png'
 ]
 
+const groupItems = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
 function Hilo() {
 
     return (
-        <>
+        <div style={{margin: 5}}>
             <div title='自动播放'>
                 <Swiper loop autoplay>
                     {banners.map((item, index) => (
@@ -52,7 +55,7 @@ function Hilo() {
                     ))}
                 </Swiper>
             </div>
-            <Grid columns={3} gap={10} style={{margin: 5}}>
+            <Grid columns={3} gap={10} style={{marginTop: 5}}>
                 <Grid.Item>
                     <Rank avatars={avatars} avatars2={avatars2} color={'green'}/>
                 </Grid.Item>
@@ -63,7 +66,11 @@ function Hilo() {
                     <Rank avatars={avatars5} avatars2={avatars6} color={'purple'} two={1}/>
                 </Grid.Item>
             </Grid>
-        </>)
+            <Divider style={{
+                borderStyle: 'dashed',
+            }}/>
+            {groupItems.map(item => <Group/>)}
+        </div>)
 }
 
 export default Hilo
