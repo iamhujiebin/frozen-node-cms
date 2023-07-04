@@ -4,19 +4,13 @@
     border-radius: 10px;
 }
 
-.rank p {
-    text-align: center;
-    color: white;
-    padding-top: 3px;
-}
-
 .rankP {
     text-align: center;
     color: white;
     padding-top: 3px;
 }
 
-.avatar {
+.avatarR {
     width: 20px;
     height: 20px;
 }

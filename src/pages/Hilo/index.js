@@ -1,5 +1,5 @@
-import {Swiper, Grid, Space, Avatar} from 'antd-mobile';
-import "./index.css"
+import {Swiper, Grid} from 'antd-mobile';
+import Rank from "@/pages/Hilo/Rank";
 
 const banners = [
     'https://image.whoisamy.shop/hilo/manager/c637ff988b6445d4b3af80b5ed1bd73d.png',
@@ -52,136 +52,15 @@ function Hilo() {
                     ))}
                 </Swiper>
             </div>
-            <Space/>
             <Grid columns={3} gap={10} style={{margin: 5}}>
                 <Grid.Item>
-                    <div className='rank' style={{background: "green"}}>
-                        <Grid columns={1} gap={3} style={{marginLeft: 'auto', marginRight: "auto", width: '80%'}}>
-                            <Grid.Item className='rankP'>
-                                Family
-                            </Grid.Item>
-                            <Grid.Item>
-                                <Swiper loop autoplay
-                                        indicator={(total, cur) => {
-                                        }}
-                                        allowTouchMove={false}
-                                        direction='vertical'
-                                        style={{height: 30, marginLeft: 5}}
-                                >
-                                    <Swiper.Item>
-                                        <Grid columns={3}>
-                                            <Grid.Item>
-                                                <Avatar className='avatar' src={avatars[0]}/>
-                                            </Grid.Item>
-                                            <Grid.Item>
-                                                <Avatar className='avatar' src={avatars[1]}/>
-                                            </Grid.Item>
-                                            <Grid.Item>
-                                                <Avatar className='avatar' src={avatars[2]}/>
-                                            </Grid.Item>
-                                        </Grid>
-                                    </Swiper.Item>
-                                    <Swiper.Item>
-                                        <Grid columns={3}>
-                                            <Grid.Item>
-                                                <Avatar className='avatar' src={avatars2[0]}/>
-                                            </Grid.Item>
-                                            <Grid.Item>
-                                                <Avatar className='avatar' src={avatars2[1]}/>
-                                            </Grid.Item>
-                                            <Grid.Item>
-                                                <Avatar className='avatar' src={avatars2[2]}/>
-                                            </Grid.Item>
-                                        </Grid>
-                                    </Swiper.Item>
-                                </Swiper>
-                            </Grid.Item>
-                        </Grid>
-                    </div>
+                    <Rank avatars={avatars} avatars2={avatars2} color={'green'}/>
                 </Grid.Item>
                 <Grid.Item>
-                    <div className='rank' style={{background: "orange"}}>
-                        <Grid columns={1} gap={3} style={{marginLeft: 'auto', marginRight: "auto", width: '80%'}}>
-                            <Grid.Item className='rankP'>
-                                Family
-                            </Grid.Item>
-                            <Grid.Item>
-                                <Swiper loop autoplay
-                                        indicator={(total, cur) => {
-                                        }}
-                                        allowTouchMove={false}
-                                        direction='vertical'
-                                        style={{height: 30, marginLeft: 5}}
-                                >
-                                    <Swiper.Item>
-                                        <Grid columns={3}>
-                                            <Grid.Item>
-                                                <Avatar className='avatar' src={avatars3[0]}/>
-                                            </Grid.Item>
-                                            <Grid.Item>
-                                                <Avatar className='avatar' src={avatars3[1]}/>
-                                            </Grid.Item>
-                                            <Grid.Item>
-                                                <Avatar className='avatar' src={avatars3[2]}/>
-                                            </Grid.Item>
-                                        </Grid>
-                                    </Swiper.Item>
-                                    <Swiper.Item>
-                                        <Grid columns={3}>
-                                            <Grid.Item>
-                                                <Avatar className='avatar' src={avatars4[0]}/>
-                                            </Grid.Item>
-                                            <Grid.Item>
-                                                <Avatar className='avatar' src={avatars4[1]}/>
-                                            </Grid.Item>
-                                            <Grid.Item>
-                                                <Avatar className='avatar' src={avatars4[2]}/>
-                                            </Grid.Item>
-                                        </Grid>
-                                    </Swiper.Item>
-                                </Swiper>
-                            </Grid.Item>
-                        </Grid>
-                    </div>
+                    <Rank avatars={avatars3} avatars2={avatars4} color={'orange'}/>
                 </Grid.Item>
                 <Grid.Item>
-                    <div className='rank' style={{background: "purple"}}>
-                        <Grid columns={1} gap={1} style={{marginLeft: 'auto', marginRight: "auto", width: '50%'}}>
-                            <Grid.Item className='rankP'>
-                                Family
-                            </Grid.Item>
-                            <Grid.Item>
-                                <Swiper loop autoplay
-                                        indicator={(total, cur) => {
-                                        }}
-                                        allowTouchMove={false}
-                                        direction='vertical'
-                                        style={{height: 30, marginLeft: 5}}
-                                >
-                                    <Swiper.Item>
-                                        <Grid columns={2}>
-                                            <Grid.Item>
-                                                <Avatar className='avatar' src={avatars5[0]}/>
-                                            </Grid.Item>
-                                            <Grid.Item>
-                                                <Avatar className='avatar' src={avatars5[1]}/>
-                                            </Grid.Item>
-                                        </Grid>
-                                    </Swiper.Item>
-                                    <Swiper.Item>
-                                        <Grid columns={2}>
-                                            <Grid.Item>
-                                                <Avatar className='avatar' src={avatars6[0]}/>
-                                            </Grid.Item>
-                                            <Grid.Item>
-                                                <Avatar className='avatar' src={avatars6[1]}/>
-                                            </Grid.Item>
-                                        </Grid>
-                                    </Swiper.Item>
-                                </Swiper>
-                            </Grid.Item>
-                        </Grid>
-                    </div>
+                    <Rank avatars={avatars5} avatars2={avatars6} color={'purple'} two={1}/>
                 </Grid.Item>
             </Grid>
         </>)
