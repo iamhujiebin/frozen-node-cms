@@ -1,8 +1,11 @@
-import {Swiper, Grid, Divider, Tabs, PullToRefresh, InfiniteScroll} from 'antd-mobile';
+import {Swiper, Grid, Divider, Tabs, PullToRefresh, InfiniteScroll, Avatar, Button} from 'antd-mobile';
+import {SearchOutline} from 'antd-mobile-icons'
 import {RankBillboard, RankCp, RankFamily} from "@/pages/Hilo/Rank";
 import Group from "@/pages/Hilo/Group";
 import {useEffect, useState} from "react";
 import {httpHilo} from "@/utils";
+import Header from "@/pages/Hilo/Header";
+import Banner from "@/pages/Hilo/Banner";
 
 function Hilo() {
     const [banners, setBanners] = useState([])
@@ -17,6 +20,7 @@ function Hilo() {
     const [pageIndexPopular, setPageIndexPopular] = useState(0)
     const [pageIndexNew, setPageIndexNew] = useState(0)
     const [lastIdNew, setLastIdNew] = useState(0)
+    const [page, setPage] = useState('popular') // popular | discover
     useEffect(() => {
         httpHilo.get("/v1/imGroup/banner/list").then(r => {
             if (r.data?.length > 0) {
@@ -54,6 +58,9 @@ function Hilo() {
             setCp(tmpCp)
         })
     }, [])
+    useEffect(() => {
+        console.log(page)
+    }, [page])
     const onTabChange = (value) => {
         setTab(value)
     }
@@ -101,54 +108,62 @@ function Hilo() {
         }
     }
 
-    return (<div style={{margin: 5}}>
-        <div title='自动播放' style={{height: 150, background: "grey"}}>
-            {banners.length > 0 && (<Swiper loop autoplay>
-                {banners.map((item, index) => (<Swiper.Item key={index}>
-                    <img style={{"width": "100%", height: 150}} src={item.bannerUrl}
-                         onClick={() => window.open(item.actionUrl)}/>
-                </Swiper.Item>))}
-            </Swiper>)}
-        </div>
-        <Grid columns={3} gap={10} style={{marginTop: 5}}>
-            <Grid.Item>
-                <RankFamily family={family}/>
-            </Grid.Item>
-            <Grid.Item>
-                <RankBillboard billboard={billboard}/>
-            </Grid.Item>
-            <Grid.Item>
-                <RankCp cp={cp}/>
-            </Grid.Item>
-        </Grid>
-        <Divider style={{
-            borderStyle: 'dashed',
-        }}/>
-        <Tabs defaultActiveKey='popular' onChange={(key) => onTabChange(key)}>
-            <Tabs.Tab title='Popular' key='popular' forceRender>
-                <PullToRefresh onRefresh={() => doRefreshPopular(1)}>
-                    {tab === 'popular' && (groups.map((item, index) => <Group key={index} avatar={item.faceUrl}
-                                                                              medals={[{"picUrl": item.countryIcon}, ...item.groupMedals]}
-                                                                              name={item.name}
-                                                                              notify={item.notification}
-                                                                              hit={item.groupInUserDuration}
-                                                                              maxStage={item.maxStage}/>))}
-                    <InfiniteScroll loadMore={() => doRefreshPopular(pageIndexPopular)} hasMore={hasMorePopular}/>
-                </PullToRefresh>
-            </Tabs.Tab>
-            <Tabs.Tab title='New' key='new'>
-                <PullToRefresh onRefresh={() => doRefreshNew(1)}>
-                    {tab === 'new' && news.map((item, index) => <Group key={index} avatar={item.faceUrl}
-                                                                       medals={[{"picUrl": item.countryIcon}, ...item.groupMedals]}
-                                                                       name={item.name}
-                                                                       notify={item.notification}
-                                                                       hit={item.groupInUserDuration}
-                                                                       maxStage={item.maxStage}/>)}
-                    <InfiniteScroll loadMore={() => doRefreshNew(pageIndexNew)} hasMore={hasMoreNews}/>
-                </PullToRefresh>
-            </Tabs.Tab>
-        </Tabs>
-    </div>)
+    return (
+        <>
+            {/*头部搜索*/}
+            <Header page={page} setPage={setPage}/>
+            <div style={{margin: 5, marginTop: -40}}>
+                {page === 'popular' && (
+                    <>
+                        {/*banners*/}
+                        <Banner banners={banners}/>
+                        {/*三个排行*/}
+                        <Grid columns={3} gap={10} style={{marginTop: 5}}>
+                            <Grid.Item>
+                                <RankFamily family={family}/>
+                            </Grid.Item>
+                            <Grid.Item>
+                                <RankBillboard billboard={billboard}/>
+                            </Grid.Item>
+                            <Grid.Item>
+                                <RankCp cp={cp}/>
+                            </Grid.Item>
+                        </Grid>
+                        <Divider style={{
+                            borderStyle: 'dashed',
+                        }}/>
+                        {/*群组列表*/}
+                        <Tabs style={{marginTop: -20}} defaultActiveKey='popular' onChange={(key) => onTabChange(key)}>
+                            <Tabs.Tab title='Popular' key='popular'>
+                                <PullToRefresh onRefresh={() => doRefreshPopular(1)}>
+                                    {tab === 'popular' && (groups.map((item, index) => <Group key={index}
+                                                                                              avatar={item.faceUrl}
+                                                                                              medals={[{"picUrl": item.countryIcon}, ...item.groupMedals]}
+                                                                                              name={item.name}
+                                                                                              notify={item.notification}
+                                                                                              hit={item.groupInUserDuration}
+                                                                                              maxStage={item.maxStage}/>))}
+                                    <InfiniteScroll loadMore={() => doRefreshPopular(pageIndexPopular)}
+                                                    hasMore={hasMorePopular}/>
+                                </PullToRefresh>
+                            </Tabs.Tab>
+                            <Tabs.Tab title='New' key='new'>
+                                <PullToRefresh onRefresh={() => doRefreshNew(1)}>
+                                    {tab === 'new' && news.map((item, index) => <Group key={index} avatar={item.faceUrl}
+                                                                                       medals={[{"picUrl": item.countryIcon}, ...item.groupMedals]}
+                                                                                       name={item.name}
+                                                                                       notify={item.notification}
+                                                                                       hit={item.groupInUserDuration}
+                                                                                       maxStage={item.maxStage}/>)}
+                                    <InfiniteScroll loadMore={() => doRefreshNew(pageIndexNew)} hasMore={hasMoreNews}/>
+                                </PullToRefresh>
+                            </Tabs.Tab>
+                        </Tabs>
+                    </>
+                )}
+            </div>
+        </>
+    )
 }
 
 export default Hilo
