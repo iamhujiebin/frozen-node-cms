@@ -14,8 +14,8 @@ function Hilo() {
     const [tab, setTab] = useState('popular')
     const [hasMorePopular, setHasMorePopular] = useState(true)
     const [hasMoreNews, setHasMoreNews] = useState(true)
-    const [pageIndexPopular, setPageIndexPopular] = useState(1)
-    const [pageIndexNew, setPageIndexNew] = useState(1)
+    const [pageIndexPopular, setPageIndexPopular] = useState(0)
+    const [pageIndexNew, setPageIndexNew] = useState(0)
     const [lastIdNew, setLastIdNew] = useState(0)
     useEffect(() => {
         httpHilo.get("/v1/imGroup/banner/list").then(r => {
@@ -59,12 +59,21 @@ function Hilo() {
     }
 
     // 需要定义async异步函数,InfiniteScroll才能触发异步的"加载中"状态
-    async function doRefreshNew() {
+    async function doRefreshNew(pageIndex) {
         console.log("load more new!!")
-        const r = await httpHilo.get(`/v1/imGroup/latest?pageIndex=${pageIndexNew}&pageSize=30&lastId=${lastIdNew}`)
+        let lastId = lastIdNew
+        if (pageIndex === 0 || pageIndex === 1) {
+            lastId = 0
+            pageIndex = 1
+        }
+        const r = await httpHilo.get(`/v1/imGroup/latest?pageIndex=${pageIndex}&pageSize=30&lastId=${lastId}`)
         if (r.data?.length > 0) {
-            setNews([...news, ...r.data])
-            setPageIndexNew(pageIndexNew + 1)
+            if (pageIndex === 1) {
+                setNews(r.data)
+            } else {
+                setNews([...news, ...r.data])
+            }
+            setPageIndexNew(pageIndex + 1)
             setHasMoreNews(true)
             console.log("lastId:", r.data[r.data.length - 1].id)
             setLastIdNew(r.data[r.data.length - 1].id)
@@ -73,12 +82,19 @@ function Hilo() {
         }
     }
 
-    async function doRefreshPopular() {
+    async function doRefreshPopular(pageIndex) {
         console.log("load more popular!!")
-        const r = await httpHilo.get(`/v1/imGroup/popular?pageIndex=${pageIndexPopular}&pageSize=30`)
+        if (pageIndex === 0) {
+            pageIndex = 1
+        }
+        const r = await httpHilo.get(`/v1/imGroup/popular?pageIndex=${pageIndex}&pageSize=30`)
         if (r.data?.data.length > 0) {
-            setGroups([...groups, ...r.data.data])
-            setPageIndexPopular(pageIndexPopular + 1)
+            if (pageIndex === 1) {
+                setGroups(r.data.data)
+            } else {
+                setGroups([...groups, ...r.data.data])
+            }
+            setPageIndexPopular(pageIndex + 1)
             setHasMorePopular(true)
         } else {
             setHasMorePopular(false)
@@ -110,25 +126,25 @@ function Hilo() {
         }}/>
         <Tabs defaultActiveKey='popular' onChange={(key) => onTabChange(key)}>
             <Tabs.Tab title='Popular' key='popular' forceRender>
-                <PullToRefresh onRefresh={doRefreshPopular}>
+                <PullToRefresh onRefresh={() => doRefreshPopular(1)}>
                     {tab === 'popular' && (groups.map((item, index) => <Group key={index} avatar={item.faceUrl}
                                                                               medals={[{"picUrl": item.countryIcon}, ...item.groupMedals]}
                                                                               name={item.name}
                                                                               notify={item.notification}
                                                                               hit={item.groupInUserDuration}
                                                                               maxStage={item.maxStage}/>))}
-                    <InfiniteScroll loadMore={doRefreshPopular} hasMore={hasMorePopular}/>
+                    <InfiniteScroll loadMore={() => doRefreshPopular(pageIndexPopular)} hasMore={hasMorePopular}/>
                 </PullToRefresh>
             </Tabs.Tab>
             <Tabs.Tab title='New' key='new'>
-                <PullToRefresh onRefresh={doRefreshNew}>
+                <PullToRefresh onRefresh={() => doRefreshNew(1)}>
                     {tab === 'new' && news.map((item, index) => <Group key={index} avatar={item.faceUrl}
                                                                        medals={[{"picUrl": item.countryIcon}, ...item.groupMedals]}
                                                                        name={item.name}
                                                                        notify={item.notification}
                                                                        hit={item.groupInUserDuration}
                                                                        maxStage={item.maxStage}/>)}
-                    <InfiniteScroll loadMore={doRefreshNew} hasMore={hasMoreNews}/>
+                    <InfiniteScroll loadMore={() => doRefreshNew(pageIndexNew)} hasMore={hasMoreNews}/>
                 </PullToRefresh>
             </Tabs.Tab>
         </Tabs>

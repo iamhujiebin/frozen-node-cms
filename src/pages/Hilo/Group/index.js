@@ -17,9 +17,10 @@ const Group = ({avatar, medals, name, notify, hit, maxStage}) => {
                             <span style={{fontSize: 12}}>{name}</span>
                         </Grid.Item>
                         <Grid.Item>
-                            <Space wrap style={{'--gap': '3px'}}>
+                            <Space wrap style={{'--gap': '2px'}}>
                                 {medals?.length > 0 && medals.map((item, index) => (
-                                    <Avatar key={index} style={{width: 10, height: 10}}
+                                    <Avatar key={index}
+                                            style={index === 0 ? {width: 20, height: 15, borderRadius: 0} : {width: 16, height: 16, borderRadius: 0}}
                                             src={item.picUrl}/>
                                 ))}
                             </Space>
