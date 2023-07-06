@@ -1,5 +1,4 @@
-import {Swiper, Grid, Divider, Tabs, PullToRefresh, InfiniteScroll, Avatar, Button} from 'antd-mobile';
-import {SearchOutline} from 'antd-mobile-icons'
+import {Grid, Divider, Tabs, PullToRefresh, InfiniteScroll, Avatar, Button} from 'antd-mobile';
 import {RankBillboard, RankCp, RankFamily} from "@/pages/Hilo/Rank";
 import Group from "@/pages/Hilo/Group";
 import {useEffect, useState} from "react";

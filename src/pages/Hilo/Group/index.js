@@ -1,4 +1,4 @@
-import {Avatar, Grid, Space} from "antd-mobile";
+import {Avatar, Grid, Space, Ellipsis} from "antd-mobile";
 import {AntOutline, HistogramOutline} from 'antd-mobile-icons'
 
 const Group = ({avatar, medals, name, notify, hit, maxStage}) => {
@@ -20,13 +20,18 @@ const Group = ({avatar, medals, name, notify, hit, maxStage}) => {
                             <Space wrap style={{'--gap': '2px'}}>
                                 {medals?.length > 0 && medals.map((item, index) => (
                                     <Avatar key={index}
-                                            style={index === 0 ? {width: 20, height: 15, borderRadius: 0} : {width: 16, height: 16, borderRadius: 0}}
+                                            style={index === 0 ? {width: 20, height: 15, borderRadius: 0} : {
+                                                width: 16,
+                                                height: 16,
+                                                borderRadius: 0
+                                            }}
                                             src={item.picUrl}/>
                                 ))}
                             </Space>
                         </Grid.Item>
                         <Grid.Item>
-                            <span style={{fontSize: 12, color: 'gray'}}>{notify.slice(0, 30)}</span>
+                            {/*<span style={{fontSize: 12, color: 'gray'}}>{notify.slice(0, 30)}</span>*/}
+                            <Ellipsis direction='end' rows={1} content={notify} style={{fontSize: 12, color: 'gray'}}/>
                         </Grid.Item>
                     </Grid>
                 </div>
