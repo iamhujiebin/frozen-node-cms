@@ -1,4 +1,4 @@
-import {Swiper, Grid, Divider} from 'antd-mobile';
+import {Swiper, Grid, Divider, Tabs} from 'antd-mobile';
 import {RankBillboard, RankCp, RankFamily} from "@/pages/Hilo/Rank";
 import Group from "@/pages/Hilo/Group";
 import {useEffect, useState} from "react";
@@ -7,9 +7,11 @@ import {httpHilo} from "@/utils";
 function Hilo() {
     const [banners, setBanners] = useState([])
     const [groups, setGroups] = useState([])
+    const [news, setNews] = useState([])
     const [billboard, setBillboard] = useState({})
     const [family, setFamily] = useState({})
     const [cp, setCp] = useState([])
+    const [tab, setTab] = useState('popular')
     useEffect(() => {
         httpHilo.get("/v1/imGroup/banner/list").then(r => {
             if (r.data?.length > 0) {
@@ -18,12 +20,21 @@ function Hilo() {
         })
     }, [])
     useEffect(() => {
-        httpHilo.get("/v1/imGroup/popular?pageIndex=1&pageSize=30").then(r => {
-            if (r.data?.data.length > 0) {
-                setGroups(r.data.data)
-            }
-        })
-    }, [])
+        if (tab === 'popular') {
+            httpHilo.get("/v1/imGroup/popular?pageIndex=1&pageSize=30").then(r => {
+                if (r.data?.data.length > 0) {
+                    setGroups(r.data.data)
+                }
+            })
+        }
+        if (tab === 'new') {
+            httpHilo.get("/v1/imGroup/latest").then(r => {
+                if (r.data?.length > 0) {
+                    setNews(r.data)
+                }
+            })
+        }
+    }, [tab])
     useEffect(() => {
         httpHilo.get("/v1/billboard/top").then(r => {
             if (r.data) {
@@ -81,11 +92,24 @@ function Hilo() {
             <Divider style={{
                 borderStyle: 'dashed',
             }}/>
-            {groups.map((item, index) => <Group key={index} avatar={item.faceUrl}
-                                                medals={[{"picUrl": item.countryIcon}, ...item.groupMedals]}
-                                                name={item.name}
-                                                notify={item.notification} hit={item.groupInUserDuration}
-                                                maxStage={item.maxStage}/>)}
+            <Tabs defaultActiveKey='popular' onChange={(key) => setTab(key)}>
+                <Tabs.Tab title='Popular' key='popular'>
+                    {tab === 'popular' && groups.map((item, index) => <Group key={index} avatar={item.faceUrl}
+                                                                             medals={[{"picUrl": item.countryIcon}, ...item.groupMedals]}
+                                                                             name={item.name}
+                                                                             notify={item.notification}
+                                                                             hit={item.groupInUserDuration}
+                                                                             maxStage={item.maxStage}/>)}
+                </Tabs.Tab>
+                <Tabs.Tab title='New' key='new'>
+                    {tab === 'new' && news.map((item, index) => <Group key={index} avatar={item.faceUrl}
+                                                                       medals={[{"picUrl": item.countryIcon}, ...item.groupMedals]}
+                                                                       name={item.name}
+                                                                       notify={item.notification}
+                                                                       hit={item.groupInUserDuration}
+                                                                       maxStage={item.maxStage}/>)}
+                </Tabs.Tab>
+            </Tabs>
         </div>)
 }
 

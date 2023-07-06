@@ -25,7 +25,7 @@ const Group = ({avatar, medals, name, notify, hit, maxStage}) => {
                             </Space>
                         </Grid.Item>
                         <Grid.Item>
-                            <span style={{fontSize: 12}}>{notify}</span>
+                            <span style={{fontSize: 12, color: 'gray'}}>{notify.slice(0, 30)}</span>
                         </Grid.Item>
                     </Grid>
                 </div>
