@@ -93,47 +93,48 @@ const RankBillboard = ({billboard}) => {
                 Rank
             </Grid.Item>
             <Grid.Item>
-                <Swiper loop autoplay
-                        indicator={(total, cur) => {
-                        }}
-                        allowTouchMove={false}
-                        direction='vertical'
-                        style={{height: 30, marginLeft: 5}}
-                >
-                    {billboard.celebrity && (
-                        <Swiper.Item>
-                            <Grid columns={3}>
-                                {billboard.celebrity.map((item, index) => (
-                                    <Grid.Item key={index}>
-                                        <Avatar className='avatarR' src={item.avatar}/>
-                                    </Grid.Item>
-                                ))}
-                            </Grid>
-                        </Swiper.Item>
-                    )}
-                    {billboard.charm && (
-                        <Swiper.Item>
-                            <Grid columns={3}>
-                                {billboard.charm.map((item, index) => (
-                                    <Grid.Item key={index}>
-                                        <Avatar className='avatarR' src={item.avatar}/>
-                                    </Grid.Item>
-                                ))}
-                            </Grid>
-                        </Swiper.Item>
-                    )}
-                    {billboard.group && (
-                        <Swiper.Item>
-                            <Grid columns={3}>
-                                {billboard.group.map((item, index) => (
-                                    <Grid.Item key={index}>
-                                        <Avatar className='avatarR' src={item.avatar}/>
-                                    </Grid.Item>
-                                ))}
-                            </Grid>
-                        </Swiper.Item>
-                    )}
-                </Swiper>
+                {(billboard.celebrity || billboard.charm || billboard.group) && (
+                    <Swiper loop autoplay
+                            indicator={(total, cur) => {
+                            }}
+                            allowTouchMove={false}
+                            direction='vertical'
+                            style={{height: 30, marginLeft: 5}}
+                    >
+                        {billboard.celebrity && (
+                            <Swiper.Item>
+                                <Grid columns={3}>
+                                    {billboard.celebrity.map((item, index) => (
+                                        <Grid.Item key={index}>
+                                            <Avatar className='avatarR' src={item.avatar}/>
+                                        </Grid.Item>
+                                    ))}
+                                </Grid>
+                            </Swiper.Item>
+                        )}
+                        {billboard.charm && (
+                            <Swiper.Item>
+                                <Grid columns={3}>
+                                    {billboard.charm.map((item, index) => (
+                                        <Grid.Item key={index}>
+                                            <Avatar className='avatarR' src={item.avatar}/>
+                                        </Grid.Item>
+                                    ))}
+                                </Grid>
+                            </Swiper.Item>
+                        )}
+                        {billboard.group && (
+                            <Swiper.Item>
+                                <Grid columns={3}>
+                                    {billboard.group.map((item, index) => (
+                                        <Grid.Item key={index}>
+                                            <Avatar className='avatarR' src={item.avatar}/>
+                                        </Grid.Item>
+                                    ))}
+                                </Grid>
+                            </Swiper.Item>
+                        )}
+                    </Swiper>)}
             </Grid.Item>
         </Grid>
     </div>)
@@ -146,47 +147,48 @@ const RankFamily = ({family}) => {
                 Family
             </Grid.Item>
             <Grid.Item>
-                <Swiper loop autoplay
-                        indicator={(total, cur) => {
-                        }}
-                        allowTouchMove={false}
-                        direction='vertical'
-                        style={{height: 30, marginLeft: 5}}
-                >
-                    {family.day && (
-                        <Swiper.Item>
-                            <Grid columns={3}>
-                                {family.day.map((item, index) => (
-                                    <Grid.Item key={index}>
-                                        <Avatar className='avatarR' src={item.icon}/>
-                                    </Grid.Item>
-                                ))}
-                            </Grid>
-                        </Swiper.Item>
-                    )}
-                    {family.week && (
-                        <Swiper.Item>
-                            <Grid columns={3}>
-                                {family.week.map((item, index) => (
-                                    <Grid.Item key={index}>
-                                        <Avatar className='avatarR' src={item.icon}/>
-                                    </Grid.Item>
-                                ))}
-                            </Grid>
-                        </Swiper.Item>
-                    )}
-                    {family.month && (
-                        <Swiper.Item>
-                            <Grid columns={3}>
-                                {family.month.map((item, index) => (
-                                    <Grid.Item key={index}>
-                                        <Avatar className='avatarR' src={item.icon}/>
-                                    </Grid.Item>
-                                ))}
-                            </Grid>
-                        </Swiper.Item>
-                    )}
-                </Swiper>
+                {(family.day || family.week || family.month) && (
+                    <Swiper loop autoplay
+                            indicator={(total, cur) => {
+                            }}
+                            allowTouchMove={false}
+                            direction='vertical'
+                            style={{height: 30, marginLeft: 5}}
+                    >
+                        {family.day && (
+                            <Swiper.Item>
+                                <Grid columns={3}>
+                                    {family.day.map((item, index) => (
+                                        <Grid.Item key={index}>
+                                            <Avatar className='avatarR' src={item.icon}/>
+                                        </Grid.Item>
+                                    ))}
+                                </Grid>
+                            </Swiper.Item>
+                        )}
+                        {family.week && (
+                            <Swiper.Item>
+                                <Grid columns={3}>
+                                    {family.week.map((item, index) => (
+                                        <Grid.Item key={index}>
+                                            <Avatar className='avatarR' src={item.icon}/>
+                                        </Grid.Item>
+                                    ))}
+                                </Grid>
+                            </Swiper.Item>
+                        )}
+                        {family.month && (
+                            <Swiper.Item>
+                                <Grid columns={3}>
+                                    {family.month.map((item, index) => (
+                                        <Grid.Item key={index}>
+                                            <Avatar className='avatarR' src={item.icon}/>
+                                        </Grid.Item>
+                                    ))}
+                                </Grid>
+                            </Swiper.Item>
+                        )}
+                    </Swiper>)}
             </Grid.Item>
         </Grid>
     </div>)
@@ -199,26 +201,27 @@ const RankCp = ({cp}) => {
                 CP
             </Grid.Item>
             <Grid.Item>
-                <Swiper loop autoplay
-                        indicator={(total, cur) => {
-                        }}
-                        allowTouchMove={false}
-                        direction='vertical'
-                        style={{height: 30, marginLeft: 5}}
-                >
-                    {cp.length > 0 && cp.map((item, index) => (
-                        <Swiper.Item key={index}>
-                            <Grid columns={2}>
-                                <Grid.Item>
-                                    <Avatar className='avatarR' src={item[0]}/>
-                                </Grid.Item>
-                                <Grid.Item>
-                                    <Avatar className='avatarR' src={item[1]}/>
-                                </Grid.Item>
-                            </Grid>
-                        </Swiper.Item>
-                    ))}
-                </Swiper>
+                {cp.length > 0 && (
+                    <Swiper loop autoplay
+                            indicator={(total, cur) => {
+                            }}
+                            allowTouchMove={false}
+                            direction='vertical'
+                            style={{height: 30, marginLeft: 5}}
+                    >
+                        {cp.map((item, index) => (
+                            <Swiper.Item key={index}>
+                                <Grid columns={2}>
+                                    <Grid.Item>
+                                        <Avatar className='avatarR' src={item[0]}/>
+                                    </Grid.Item>
+                                    <Grid.Item>
+                                        <Avatar className='avatarR' src={item[1]}/>
+                                    </Grid.Item>
+                                </Grid>
+                            </Swiper.Item>
+                        ))}
+                    </Swiper>)}
             </Grid.Item>
         </Grid>
     </div>)
