@@ -1,4 +1,5 @@
 import axios from "axios"
+import {getHiloToken} from "@/utils/token";
 
 const httpHilo = axios.create({
     baseURL: "https://apiv1.faceline.live",
@@ -8,10 +9,14 @@ const httpHilo = axios.create({
 // 请求拦截器
 // config: http的config
 httpHilo.interceptors.request.use((config) => {
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjE3NjMyMTEsIkV4dGVybmFsSWQiOiJkYTllMTJhM2I0ZGU0YWE5Yjc2MjBlNDllYzUyMTliYyIsImV4cCI6MTY5MTEzMzQyNiwiaXNzIjoiaGlsb0FwaSJ9.ew1BaqGNM34_etSoR3mFLiu7QYJX1KeIhrgBUSLlJXw"
+    let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjE3NjMyMTEsIkV4dGVybmFsSWQiOiJkYTllMTJhM2I0ZGU0YWE5Yjc2MjBlNDllYzUyMTliYyIsImV4cCI6MTY5MTEzMzQyNiwiaXNzIjoiaGlsb0FwaSJ9.ew1BaqGNM34_etSoR3mFLiu7QYJX1KeIhrgBUSLlJXw"
+    console.log("hilo:", getHiloToken())
+    if (getHiloToken()) {
+        token = getHiloToken()
+    }
     if (token) {
         config.headers.token = `${token}`
-        config.headers.nonce= `hilo`
+        config.headers.nonce = `hilo`
     }
     return config
 }, (error) => {

@@ -1,6 +1,16 @@
 import {http, httpRaw} from './http'
 import {httpHilo} from './http_hilo'
-import {getToken, setToken, clearToken, getMobile, setMobile, getCode, setCode} from './token'
+import {
+    getToken,
+    setToken,
+    clearToken,
+    getMobile,
+    setMobile,
+    getCode,
+    setCode,
+    getHiloToken,
+    setHiloToken
+} from './token'
 import {HistoryRouter, history} from './history'
 
 export {
@@ -15,5 +25,7 @@ export {
     setCode,
     getCode,
     HistoryRouter,
-    history
+    history,
+    getHiloToken,
+    setHiloToken
 }

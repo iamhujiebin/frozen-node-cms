@@ -1,20 +1,29 @@
-import {Avatar, Button, Grid, Popup, Form, Input} from "antd-mobile";
+import {Avatar, Button, Grid, Popup, Form, Input, List, Image} from "antd-mobile";
 import {SearchOutline} from "antd-mobile-icons";
-import {useEffect, useRef, useState} from "react";
-import {httpHilo} from "@/utils";
+import {useEffect, useState} from "react";
+import {getHiloToken, httpHilo, setHiloToken} from "@/utils";
 
 const Header = ({page, setPage}) => {
-    const [avatar, setAvatar] = useState([])
-    const [open, setOpen] = useState(true)
-    useEffect(() => {
+    const [open, setOpen] = useState(false)
+    const [userDetail, setUserDetail] = useState({})
+    const getUserDetail = () => {
         httpHilo.get("/v1/user/detail").then(r => {
             if (r.data?.avatar?.length > 0) {
-                setAvatar(r.data.avatar)
+                setUserDetail(r.data)
             }
         })
+    }
+    useEffect(() => {
+        getUserDetail()
     }, [])
     const onFinish = (values) => {
-        console.log(values)
+        setHiloToken(values.token)
+        setOpen(false)
+        getUserDetail()
+    }
+    const onOpen = () => {
+        getUserDetail()
+        setOpen(true)
     }
     return (
         <div style={{padding: 10, height: 94, backgroundColor: "purple", borderRadius: "0 0 30% 30%"}}>
@@ -26,24 +35,41 @@ const Header = ({page, setPage}) => {
                 position='left'
                 bodyStyle={{width: '60vw'}}
             >
+                <List header='用户信息'>
+                    <List.Item
+                        key={userDetail.id}
+                        prefix={
+                            <Image
+                                src={userDetail.avatar}
+                                style={{borderRadius: 20}}
+                                fit='cover'
+                                width={40}
+                                height={40}
+                            />
+                        }
+                        description={(
+                            <div style={{padding: 2}}>
+                                <p>id:{userDetail.id}</p>
+                                <p>code:{userDetail.code}</p>
+                                <p>country:{userDetail.country} <img src={userDetail.countryIcon}
+                                                                     style={{width: 20, height: 15}}/></p>
+                            </div>
+                        )}
+                    >
+                        {userDetail.nick}
+                    </List.Item>
+                </List>
                 <Form
                     name='form'
                     onFinish={onFinish}
                     footer={
                         <Button block type='submit' color='primary' size='large'>
-                            提交
+                            更新token
                         </Button>
                     }
                 >
-                    <Form.Header>竖直布局表单</Form.Header>
-                    <Form.Item name='name' label='姓名' rules={[{required: true}]}>
-                        <Input placeholder='请输入姓名'/>
-                    </Form.Item>
-                    <Form.Item name='address' label='地址' help='详情地址'>
-                        <Input placeholder='请输入地址'/>
-                    </Form.Item>
-                    <Form.Item name='disabledField' label='禁用' disabled>
-                        <Input placeholder='禁止输入'/>
+                    <Form.Item name='token' label='token'>
+                        <Input placeholder={getHiloToken()}/>
                     </Form.Item>
                 </Form>
             </Popup>
@@ -51,8 +77,8 @@ const Header = ({page, setPage}) => {
                 <Grid.Item span={2}>
                     <Avatar
                         style={{width: 40, height: 40, borderRadius: "50%"}}
-                        src={avatar}
-                        onClick={() => setOpen(true)}
+                        src={userDetail.avatar}
+                        onClick={() => onOpen()}
                     />
                 </Grid.Item>
                 <Grid.Item span={4}>
