@@ -3,6 +3,13 @@ import {SearchOutline} from "antd-mobile-icons";
 import {useEffect, useState} from "react";
 import {getHiloToken, httpHilo, setHiloToken} from "@/utils";
 
+const styleP = {
+    padding: 10, height: 94, backgroundColor: "purple", borderRadius: "0 0 30% 30%"
+}
+const styleD = {
+    padding: 10, height: 54, backgroundColor: "purple"
+}
+
 const Header = ({page, setPage}) => {
     const [open, setOpen] = useState(false)
     const [userDetail, setUserDetail] = useState({})
@@ -26,7 +33,7 @@ const Header = ({page, setPage}) => {
         setOpen(true)
     }
     return (
-        <div style={{padding: 10, height: 94, backgroundColor: "purple", borderRadius: "0 0 30% 30%"}}>
+        <div style={page === 'popular' ? styleP : styleD}>
             <Popup
                 visible={open}
                 onMaskClick={() => {

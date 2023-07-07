@@ -1,9 +1,3 @@
-.rank {
-    width: 120px;
-    height: 50px;
-    border-radius: 10px;
-}
-
 .rankP {
     text-align: center;
     color: white;
@@ -14,3 +8,25 @@
     width: 20px;
     height: 20px;
 }
+
+.orangeB {
+    background: linear-gradient(to right, #fad554, #e0a301);
+    width: 120px;
+    height: 50px;
+    border-radius: 10px;
+}
+
+.greenB {
+    background: linear-gradient(to right, #0bd900, #07ad00);
+    width: 120px;
+    height: 50px;
+    border-radius: 10px;
+}
+
+.purpleB {
+    background: linear-gradient(to right, #efb0ff, #c65ae8);
+    width: 120px;
+    height: 50px;
+    border-radius: 10px;
+}
+

@@ -87,7 +87,7 @@ const Rank = ({avatars, avatars2, color, two}) => {
 }
 
 const RankBillboard = ({billboard}) => {
-    return (<div className='rank' style={{background: 'orange'}}>
+    return (<div className='orangeB'>
         <Grid columns={1} gap={3} style={{marginLeft: 'auto', marginRight: "auto", width: '80%'}}>
             <Grid.Item className='rankP'>
                 Rank
@@ -141,7 +141,7 @@ const RankBillboard = ({billboard}) => {
 }
 
 const RankFamily = ({family}) => {
-    return (<div className='rank' style={{background: 'green'}}>
+    return (<div className='greenB'>
         <Grid columns={1} gap={3} style={{marginLeft: 'auto', marginRight: "auto", width: '80%'}}>
             <Grid.Item className='rankP'>
                 Family
@@ -195,7 +195,7 @@ const RankFamily = ({family}) => {
 }
 
 const RankCp = ({cp}) => {
-    return (<div className='rank' style={{background: "purple"}}>
+    return (<div className='purpleB'>
         <Grid columns={1} gap={1} style={{marginLeft: 'auto', marginRight: "auto", width: '50%'}}>
             <Grid.Item className='rankP'>
                 CP
