@@ -10,16 +10,20 @@ const GiftWall = ({}) => {
     return (
         <div style={{margin: 10}}>
             <p style={{fontWeight: 500}}>Gift Wall</p>
-            <div className={'purpleB'}>
+            <div className={'purpleBC'}>
                 {giftWalls.length > 0 && (
                     <Grid columns={10}>
                         <Grid.Item span={4}>
-                            <p style={{fontWeight: 500, color: "white", textAlign: "center", margin: "25px 25px 25px -25px"}}>Gift Wall</p>
+                            <p style={{
+                                fontWeight: 500,
+                                color: "white",
+                                textAlign: "center",
+                                margin: "25px 25px 25px -25px"
+                            }}>Gift Wall</p>
                         </Grid.Item>
                         <Grid.Item span={6}>
                             <Swiper loop autoplay
-                                    indicator={(total, cur) => {
-                                    }}
+                                    indicator={() => null}
                                     allowTouchMove={false}
                                     direction='vertical'
                                     style={{height: 60, margin: 11}}
@@ -28,13 +32,13 @@ const GiftWall = ({}) => {
                                     <Swiper.Item key={index}>
                                         <Grid columns={3}>
                                             <Grid.Item>
-                                                <Avatar className='avatarR' src={item[0]}/>
+                                                <Avatar style={{width: 40, height: 40}} src={item[0]}/>
                                             </Grid.Item>
                                             <Grid.Item>
-                                                <Avatar className='avatarR' src={item[1]}/>
+                                                <Avatar style={{width: 40, height: 40}} src={item[1]}/>
                                             </Grid.Item>
                                             <Grid.Item>
-                                                <Avatar className='avatarR' src={item[2]}/>
+                                                <Avatar style={{width: 40, height: 40}} src={item[2]}/>
                                             </Grid.Item>
                                         </Grid>
                                     </Swiper.Item>)

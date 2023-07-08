@@ -7,6 +7,9 @@ import Header from "@/pages/Hilo/Header";
 import Banner from "@/pages/Hilo/Banner";
 import Country from "@/pages/Hilo/Country";
 import GiftWall from "@/pages/Hilo/GiftWall";
+import Broadcast from "@/pages/Hilo/Broadcast";
+import Activities from "@/pages/Hilo/Activity";
+import Event from "@/pages/Hilo/Event";
 
 function Hilo() {
     const [banners, setBanners] = useState([])
@@ -21,7 +24,7 @@ function Hilo() {
     const [pageIndexPopular, setPageIndexPopular] = useState(0)
     const [pageIndexNew, setPageIndexNew] = useState(0)
     const [lastIdNew, setLastIdNew] = useState(0)
-    const [page, setPage] = useState('discover') // popular | discover
+    const [page, setPage] = useState('popular') // popular | discover
     useEffect(() => {
         httpHilo.get("/v1/imGroup/banner/list").then(r => {
             if (r.data?.length > 0) {
@@ -165,6 +168,9 @@ function Hilo() {
                 <>
                     <Country/>
                     <GiftWall/>
+                    <Broadcast/>
+                    <Activities/>
+                    <Event/>
                 </>
             )}
         </>

@@ -10,8 +10,7 @@ const Rank = ({avatars, avatars2, color, two}) => {
                 </Grid.Item>
                 <Grid.Item>
                     <Swiper loop autoplay
-                            indicator={(total, cur) => {
-                            }}
+                            indicator={() => null}
                             allowTouchMove={false}
                             direction='vertical'
                             style={{height: 30, marginLeft: 5}}
@@ -48,8 +47,7 @@ const Rank = ({avatars, avatars2, color, two}) => {
             </Grid.Item>
             <Grid.Item>
                 <Swiper loop autoplay
-                        indicator={(total, cur) => {
-                        }}
+                        indicator={() => null}
                         allowTouchMove={false}
                         direction='vertical'
                         style={{height: 30, marginLeft: 5}}
@@ -95,8 +93,7 @@ const RankBillboard = ({billboard}) => {
             <Grid.Item>
                 {(billboard.celebrity || billboard.charm || billboard.group) && (
                     <Swiper loop autoplay
-                            indicator={(total, cur) => {
-                            }}
+                            indicator={() => null}
                             allowTouchMove={false}
                             direction='vertical'
                             style={{height: 30, marginLeft: 5}}
@@ -149,8 +146,7 @@ const RankFamily = ({family}) => {
             <Grid.Item>
                 {(family.day || family.week || family.month) && (
                     <Swiper loop autoplay
-                            indicator={(total, cur) => {
-                            }}
+                            indicator={() => null}
                             allowTouchMove={false}
                             direction='vertical'
                             style={{height: 30, marginLeft: 5}}
@@ -203,8 +199,7 @@ const RankCp = ({cp}) => {
             <Grid.Item>
                 {cp.length > 0 && (
                     <Swiper loop autoplay
-                            indicator={(total, cur) => {
-                            }}
+                            indicator={() => null}
                             allowTouchMove={false}
                             direction='vertical'
                             style={{height: 30, marginLeft: 5}}

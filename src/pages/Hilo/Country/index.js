@@ -60,7 +60,7 @@ const Country = ({}) => {
                 </Grid>
             )}
             {/*<div style={{backgroundColor: "orange", width: "auto", height: 60, borderRadius: 8}}>*/}
-            <div className={'orangeB'}>
+            <div className={'orangeBC'}>
                 <Grid columns={10}>
                     <Grid.Item span={4}>
                         <img height={60} style={{marginLeft: 20, marginRight: 10}}

@@ -1,0 +1,52 @@
+.blueB {
+    background: linear-gradient(to right, #2954ff, #001baa);
+    width: auto;
+    height: 90px;
+    border-radius: 8px;
+}
+
+.scroll-text0 {
+    animation: scrollDown0 4s linear infinite;
+}
+
+@keyframes scrollDown0 {
+    from {
+        transform: translateY(100%);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 0;
+    }
+}
+
+.scroll-text1 {
+    animation: scrollDown1 4s linear infinite;
+}
+
+@keyframes scrollDown1 {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+.scroll-text2 {
+    animation: scrollDown2 4s linear infinite;
+}
+
+@keyframes scrollDown2 {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
