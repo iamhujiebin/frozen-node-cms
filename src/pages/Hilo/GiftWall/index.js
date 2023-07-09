@@ -1,12 +1,15 @@
 import {Avatar, Grid, Swiper,} from "antd-mobile";
 import "./index.css"
+import {useEffect, useState} from "react";
+import {httpHilo} from "@/utils";
 
-const giftWalls = [
-    ["https://image.whoisamy.shop/hilo/group/7b24f6f30acf4196b25d435448319271-20230529-1685332200115.png", "https://image.whoisamy.shop/hilo/resource/country/Nepal.png", "https://image.whoisamy.shop/hilo/group/7b24f6f30acf4196b25d435448319271-20230529-1685332200115.png"],
-    ["https://image.whoisamy.shop/hilo/group/7b24f6f30acf4196b25d435448319271-20230529-1685332200115.png", "https://image.whoisamy.shop/hilo/resource/country/Nepal.png", "https://image.whoisamy.shop/hilo/group/7b24f6f30acf4196b25d435448319271-20230529-1685332200115.png"],
-    // ["https://image.whoisamy.shop/hilo/group/7b24f6f30acf4196b25d435448319271-20230529-1685332200115.png", "https://image.whoisamy.shop/hilo/resource/country/Nepal.png", "https://image.whoisamy.shop/hilo/group/7b24f6f30acf4196b25d435448319271-20230529-1685332200115.png"],
-]
 const GiftWall = ({}) => {
+    const [giftWalls, setGiftWalls] = useState([])
+    useEffect(() => {
+        httpHilo.get("/v1/gift/wall?pageIndex=1&pageSize=3").then(r => {
+            setGiftWalls(r.data)
+        })
+    }, [])
     return (
         <div style={{margin: 10}}>
             <p style={{fontWeight: 500}}>Gift Wall</p>
@@ -32,13 +35,27 @@ const GiftWall = ({}) => {
                                     <Swiper.Item key={index}>
                                         <Grid columns={3}>
                                             <Grid.Item>
-                                                <Avatar style={{width: 40, height: 40}} src={item[0]}/>
+                                                <Avatar style={{width: 40, height: 40, borderRadius: "50%"}}
+                                                        src={item.sendUser.avatar}/>
                                             </Grid.Item>
                                             <Grid.Item>
-                                                <Avatar style={{width: 40, height: 40}} src={item[1]}/>
+                                                <Grid columns={2}>
+                                                    <Grid.Item>
+                                                        <Avatar style={{width: 40, height: 40}} src={item.giftUrl}/>
+                                                    </Grid.Item>
+                                                    <Grid.Item>
+                                                        <p style={{
+                                                            color: "gold",
+                                                            fontWeight: "bold",
+                                                            marginTop: 15,
+                                                            marginLeft: 5
+                                                        }}>x1</p>
+                                                    </Grid.Item>
+                                                </Grid>
                                             </Grid.Item>
                                             <Grid.Item>
-                                                <Avatar style={{width: 40, height: 40}} src={item[2]}/>
+                                                <Avatar style={{width: 40, height: 40, borderRadius: "50%"}}
+                                                        src={item.receiveUser.avatar}/>
                                             </Grid.Item>
                                         </Grid>
                                     </Swiper.Item>)

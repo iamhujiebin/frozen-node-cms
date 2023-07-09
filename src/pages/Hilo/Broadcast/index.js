@@ -1,44 +1,15 @@
 import "./index.css"
 import React, {useEffect, useState} from "react";
-
-const broadcast = [
-    {
-        img: "https://image.whoisamy.shop/hilo/manager/74ee6581a7c14a0cb0c7ff973f9ee973.jpeg",
-        text: "Item1111111111111111111111111111"
-    },
-    {
-        img: "https://image.whoisamy.shop/hilo/manager/74ee6581a7c14a0cb0c7ff973f9ee973.jpeg",
-        text: "Item222222222222222222222222222222"
-    },
-    {
-        img: "https://image.whoisamy.shop/hilo/manager/74ee6581a7c14a0cb0c7ff973f9ee973.jpeg",
-        text: "Item33333333333333333333333333333"
-    },
-    {
-        img: "https://image.whoisamy.shop/hilo/manager/74ee6581a7c14a0cb0c7ff973f9ee973.jpeg",
-        text: "Item444444444444444444444444444"
-    },
-    {
-        img: "https://image.whoisamy.shop/hilo/manager/74ee6581a7c14a0cb0c7ff973f9ee973.jpeg",
-        text: "Item555555555555555555555555555"
-    },
-    {
-        img: "https://image.whoisamy.shop/hilo/manager/74ee6581a7c14a0cb0c7ff973f9ee973.jpeg",
-        text: "Item66666666666666666666666666666"
-    },
-    {
-        img: "https://image.whoisamy.shop/hilo/manager/74ee6581a7c14a0cb0c7ff973f9ee973.jpeg",
-        text: "Item777777777777777777777777777"
-    },
-    {
-        img: "https://image.whoisamy.shop/hilo/manager/74ee6581a7c14a0cb0c7ff973f9ee973.jpeg",
-        text: "Item8888888888888888888888888888888"
-    },
-]
-
+import {httpHilo} from "@/utils";
 
 const Broadcast = ({}) => {
     const [idx, setIdx] = useState([0, 1, 2])
+    const [broadcast, setBroadcast] = useState([])
+    useEffect(() => {
+        httpHilo.get("/v1/user/global/broadcast?pageIndex=0&pageSize=50").then(r => {
+            setBroadcast(r.data)
+        })
+    }, [])
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -54,7 +25,7 @@ const Broadcast = ({}) => {
         }, 4000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [broadcast]);
     return (
         <div style={{margin: 10}}>
             <p style={{fontWeight: 500}}>Broadcast</p>
@@ -64,8 +35,8 @@ const Broadcast = ({}) => {
                              className={index === 0 ? "scroll-text0" : index === 1 ? "scroll-text1" : "scroll-text2"}>
                             <div>
                                 <img width={22} height={22} style={{borderRadius: 10, marginRight: 5}}
-                                     src={broadcast[item].img}/>
-                                <span>{broadcast[item].text}</span>
+                                     src={broadcast[item]?.user?.avatar}/>
+                                <span style={{color: "white"}}>{broadcast[item]?.msg.slice(0, 40)}</span>
                             </div>
                         </div>
                     )

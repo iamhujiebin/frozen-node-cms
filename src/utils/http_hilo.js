@@ -10,7 +10,6 @@ const httpHilo = axios.create({
 // config: http的config
 httpHilo.interceptors.request.use((config) => {
     let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjE3NjMyMTEsIkV4dGVybmFsSWQiOiJkYTllMTJhM2I0ZGU0YWE5Yjc2MjBlNDllYzUyMTliYyIsImV4cCI6MTY5MTEzMzQyNiwiaXNzIjoiaGlsb0FwaSJ9.ew1BaqGNM34_etSoR3mFLiu7QYJX1KeIhrgBUSLlJXw"
-    console.log("hilo:", getHiloToken())
     if (getHiloToken()) {
         token = getHiloToken()
     }

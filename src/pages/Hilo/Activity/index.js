@@ -1,43 +1,15 @@
 import {Grid} from "antd-mobile";
 import {TeamOutline} from 'antd-mobile-icons'
-
-const activities = [
-    {
-        img: "https://image.whoisamy.shop/hilo/manager/74ee6581a7c14a0cb0c7ff973f9ee973.jpeg",
-        text: "Item1111111111111111111111111111"
-    },
-    {
-        img: "https://image.whoisamy.shop/hilo/manager/74ee6581a7c14a0cb0c7ff973f9ee973.jpeg",
-        text: "Item222222222222222222222222222222"
-    },
-    {
-        img: "https://image.whoisamy.shop/hilo/manager/74ee6581a7c14a0cb0c7ff973f9ee973.jpeg",
-        text: "Item33333333333333333333333333333"
-    },
-    {
-        img: "https://image.whoisamy.shop/hilo/manager/74ee6581a7c14a0cb0c7ff973f9ee973.jpeg",
-        text: "Item444444444444444444444444444"
-    },
-    {
-        img: "https://image.whoisamy.shop/hilo/manager/74ee6581a7c14a0cb0c7ff973f9ee973.jpeg",
-        text: "Item555555555555555555555555555"
-    },
-    {
-        img: "https://image.whoisamy.shop/hilo/manager/74ee6581a7c14a0cb0c7ff973f9ee973.jpeg",
-        text: "Item66666666666666666666666666666"
-    },
-    {
-        img: "https://image.whoisamy.shop/hilo/manager/74ee6581a7c14a0cb0c7ff973f9ee973.jpeg",
-        text: "Item777777777777777777777777777"
-    },
-    {
-        img: "https://image.whoisamy.shop/hilo/manager/74ee6581a7c14a0cb0c7ff973f9ee973.jpeg",
-        text: "Item8888888888888888888888888888888"
-    },
-]
-
+import {useEffect, useState} from "react";
+import {httpHilo} from "@/utils";
 
 const Activities = ({}) => {
+    const [activities, setActivities] = useState([])
+    useEffect(() => {
+        httpHilo.get("/v1/group/activity?type=0&pageSize=12&pageIndex=1&groupId=").then(r => {
+            setActivities(r.data.data)
+        })
+    }, [])
     return (
         <div style={{margin: 10}}>
             <p style={{fontWeight: 500}}>Activities</p>
@@ -45,7 +17,7 @@ const Activities = ({}) => {
                 {activities?.length > 0 && (
                     <Grid columns={2}>
                         {activities.map((item, index) => (
-                            <Grid.Item>
+                            <Grid.Item key={index}>
                                 <div style={{
                                     border: "1px solid #ababab",
                                     borderRadius: 10,
@@ -56,8 +28,9 @@ const Activities = ({}) => {
                                         <Grid.Item>
                                             <div style={{position: 'relative'}}>
                                                 <img height={100} width={"100%"} style={{borderRadius: "10px 10px 0 0"}}
-                                                     src={"https://image.whoisamy.shop/hilo/manager/74ee6581a7c14a0cb0c7ff973f9ee973.jpeg"}/>
+                                                     src={item.banner}/>
                                                 <div style={{
+                                                    backgroundColor: "#a0a0a0",
                                                     position: 'absolute',
                                                     top: 6,
                                                     left: 6,
@@ -66,7 +39,7 @@ const Activities = ({}) => {
                                                     border: "1px solid #ababab",
                                                     borderRadius: 10,
                                                     padding: 2
-                                                }}> hello world
+                                                }}> {item.theme}
                                                 </div>
                                                 <div style={{
                                                     position: 'absolute',
@@ -74,20 +47,22 @@ const Activities = ({}) => {
                                                     left: 6,
                                                     zIndex: 1,
                                                     color: "orange",
-                                                }}> Activity Now
+                                                    opacity: 0.8,
+                                                    fontWeight: "bold"
+                                                }}> {Date.now() > item.startAt ? "Activity Now" : "Today"}
                                                 </div>
                                             </div>
                                         </Grid.Item>
                                         <Grid.Item>
                                             <div>
                                                 <img width={20} height={16}
-                                                     src={"https://image.whoisamy.shop/hilo/manager/74ee6581a7c14a0cb0c7ff973f9ee973.jpeg"}/>
-                                                <span>Cip pirte</span>
+                                                     src={item.countryIcon}/>
+                                                <span>{item.theme}</span>
                                             </div>
                                         </Grid.Item>
                                         <Grid.Item>
                                             <TeamOutline color='#ae00ff'/>
-                                            <span>B.D Adda Zone</span>
+                                            <span>{item.groupName.slice(0, 20)}</span>
                                         </Grid.Item>
                                     </Grid>
                                 </div>
