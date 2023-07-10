@@ -1,0 +1,414 @@
+syntax = "proto3";
+
+package userProxy;
+
+option go_package = "protocol/userProxy";
+
+/* user*/
+message User {
+    uint64 id = 1;
+    string externalId = 2;
+    string nick = 3;
+    string avatar = 4;
+    string country = 5;
+    string countryIcon = 6;
+    uint64 birthday = 7;
+    bool isVip = 8;
+    bool isLike = 9;
+    bool isLikeMe = 10;
+    string code = 11;
+}
+
+/* Svip*/
+message Svip {
+    uint64 svipLevel = 1;
+    repeated SvipPrivilege privileges = 2;
+}
+
+message SvipPrivilege {
+    int32 type = 1;
+    bool canSwitch = 2;
+    bool userSwitch = 3;
+    string mysteryCode = 4;
+}
+
+
+/* id = 1 登录*/
+message Login {
+    string token = 1;
+}
+
+/* id = 2 登录的回应 */
+message LoginRsp {
+    uint32 status = 1;
+}
+
+/* id = 3 客户端心跳 */
+message HeartBeat {
+    string externalUid = 1;
+}
+
+/* id = 4 客户端心跳的回应 */
+message HeartBeatRsp {
+    uint32 status = 1;
+}
+
+/* id = 7 客户端上行消息 */
+message BizRequest {
+    uint32 type = 1;
+    string payLoad = 2;
+}
+
+/* id = 8 客户端上行消息的应答 */
+message BizResponse {
+    uint32 status = 1;
+}
+
+/* id == 100 | 140 匹配结果通知 waitDuration：开始/下一个时间 matchUniqueId：匹配一对的唯一标识码， status:是否是落单 singleWaitTimeInSec:单方等待连接最长时间 dualWaitTimeInSec:双方连接中最长时间*/
+message MatchSuccess {
+    string localUserId = 1;
+    string remoteUserId = 2;
+    uint32 waitDuration = 3;
+    string matchUniqueId = 4;
+    bool status = 5;
+    uint32 singleWaitTimeInSec = 6;
+    uint32 dualWaitTimeInSec = 7;
+    User remoteUser = 8;
+}
+
+/* id == 101 匹配后用户选择结果通知, failType: 只有status=2 才有值，其它为0，failType=1:等待时间到了，拒绝 failType=2:主动拒绝 */
+message MatchConfirm {
+    uint32 status = 1;
+    string channelId = 2;
+    string token = 3;
+    string localUserId = 4;
+    string remoteUserId = 5;
+    uint32 remoteAgoraId = 6;
+    uint32 callDuration = 7;
+    uint32 localAgoraId = 8;
+    uint32 diamondBalance = 9;
+    string matchUniqueId = 10;
+    uint32 failType = 11;
+}
+
+/* id == 102 视频通话准备 */
+message CallReady {
+    uint64 startTimestamp = 1;
+    uint64 endTimestamp = 2;
+    uint64 callDuration = 3;
+    string channelId = 4;
+    uint64 remainDiamond = 5;
+}
+
+/* id == 103 礼物加时 */
+message AddTimeGift {
+    uint32 giftId = 1;
+    string token = 2;
+    uint32 duration = 3;
+    uint64 endTimestamp = 4;
+    string channelId = 5;
+    bool isSender = 6;
+    uint32 giftNum = 7;
+    string iconUrl = 8;
+    string svgaUrl = 9;
+    string senderAvatar = 10;
+    string receiverAvatar = 11;
+}
+
+/* id == 104 免费加时 */
+message AddTimeFree {
+    string token = 1;
+    uint32 duration = 2;
+    uint64 endTimestamp = 3;
+    string channelId = 4;
+    uint32 senderAgoraId = 5;
+}
+
+/* id == 105 退出 */
+message ConnectsQuit {
+    uint64 from_user_id = 1;
+}
+
+/* id == 106 连接状态 */
+message ConnectStatus {
+    uint64 from_user_id = 1;
+    float user_diamonds = 2;
+    bool diamonds_enough = 3;
+}
+
+/* id == 107 ??? */
+message ConnectsCall {
+    uint64 from_user_id = 1;
+    string rong_room_name = 2;
+    bool is_join = 3;
+}
+
+/* id == 108 */
+message ConnectCommon {
+    string rong_room_name = 1;
+    uint64 from_user_id = 2;
+    string extra = 3;
+    string message = 4;
+}
+
+/* id == 109 召回授权弹框 */
+message RecallWindow {
+}
+
+/* id == 110 | 132 视频发送 status:(1:接收到邀请, 2:接收到对方同意, 3:双方拒绝（还没接通）, 4：对方挂断（接通后）diamondBalance 只有status=2,才出现)*/
+message Video {
+    string videoUniqueId = 1;
+    string channelId = 2;
+    uint32 localAgoraId = 3;
+    uint32 remoteAgoraId = 4;
+    string agoraToken = 5;
+    string sendUserId = 6;
+    string receiveUserId = 7;
+    uint32 status = 8;
+    uint32 diamondBalance = 9;
+    User sendUser = 10;
+}
+
+/* id == 111 视频通话准备 */
+message VideoCallReady {
+    uint64 startTimestamp = 1;
+    uint64 endTimestamp = 2;
+    uint64 callDuration = 3;
+    string channelId = 4;
+    uint64 remainDiamond = 5;
+}
+
+/* id == 112 互相喜欢 */
+message LikeEach {
+    string remoteUserId = 1;
+}
+
+/* id == 113 喜欢我 */
+message LikeMe {
+    string remoteUserId = 1;
+    string remoteNick = 2;
+    string channelId = 3;
+}
+
+/* id == 114 日常进入app，获取钻石 */
+message DailyInAppDiamond {
+    uint32 diamondNum = 1;
+}
+
+/* id == 115 横幅 */
+message GlobalGiftBanner {
+    uint32 bannerLevel = 1;
+    uint64 giftId = 2;
+    uint32 giftNum = 3;
+    string sendUserId = 4;
+    string receiveUserId = 5;
+    string groupId = 6;
+    string sendUserCode = 7;
+    string sendUserAvatar = 8;
+    string sendUserNick = 9;
+    string receiveUserNick = 10;
+    string giftPicUrl = 11;
+    Svip svip = 12;
+    Svip receiveSvip = 13;
+    uint32 bannerType = 14; // 类型：0.普通礼物 1.cp直接送礼 2.cp告白礼物
+    uint32 cpLevel = 15; // cp等级
+    string receiveUserAvatar = 16;
+}
+
+/* id == 116 横幅的回应，用来测量RTT */
+message GlobalGiftBannerRsp {
+    uint32 bannerLevel = 1;
+    uint64 giftId = 2;
+    uint32 giftNum = 3;
+    string sendUserId = 4;
+    string receiveUserId = 5;
+    string groupId = 6;
+}
+
+/*id==117 幸运转盘通知,客户端重新拉取查询, type：客户端不用理*/
+message LuckyWheel {
+    string groupId = 1;
+    uint32 type = 2;
+}
+
+/* id == 118 幸运转盘获胜者全服广播 */
+message LuckyWheelBanner {
+    uint32 diamondNum = 1;
+    string sendUserId = 2;
+    string groupId = 3;
+    string nick = 4;
+    string code = 5;
+    string avatar = 6;
+    Svip svip = 7;
+}
+
+/* id == 119 幸运转盘钻石变化 */
+message LuckyWheelDiamondChange {
+    string groupId = 1;
+}
+
+/* id == 120 服务器配置变更 */
+message ConfigChange {
+    uint32 type = 1;
+}
+
+/* id == 121 全局火箭横幅 */
+message GlobalRocketNotice {
+    string groupId = 1;
+    string period = 2;
+    uint32 round = 3;
+    uint32 stage = 4;
+    string topUserIcon = 5;
+    string nick = 6;
+    string code = 7;
+    string avatar = 8;
+    Svip svip = 9;
+}
+
+/* id == 122 群发功能弹窗 */
+message GroupSendNotice {
+    string senderExtId = 1;
+    string senderCode = 2;
+    uint32 senderSex = 3;
+    string senderAvatar = 4;
+    string text = 5;
+    string groupName = 6;
+    string groupCode = 7;
+    string groupAvatar = 8;
+    uint32 userInNum = 9; // 最近进入房间的人数
+    string groupId = 10;
+}
+
+/* id == 123 全球消息 */
+message GlobalBroadcast {
+    string senderExtId = 1;
+    string senderCode = 2;
+    uint32 senderSex = 3;
+    string senderAvatar = 4;
+    string senderNick = 5;
+    string msg = 6;
+    string groupId = 7;
+    uint32 senderNobleLevel = 8;
+}
+
+/* id == 124 全球消息 */
+message MicTaskFinish {
+    string userId = 1;
+    uint32 diamond = 2;
+}
+
+/* id == 125 水果机开奖通知 */
+message FruitMachine {
+    string date = 1;
+    uint32 round = 2;
+}
+
+/* id == 126 贵族变化 */
+message NobleChange {
+}
+
+/* id == 127 加入群组成功 */
+message JoinGroup {
+    string groupId = 1;
+    string externalId = 2;
+}
+
+/* id == 128 1对1视频1分钟加时成功 */
+message VideoTimeMinuteSuccess {
+    string token = 1;
+    uint32 duration = 2;
+    uint64 endTimestamp = 3;
+    string channelId = 4;
+    uint32 senderAgoraId = 5;
+    string videoUniqueId = 6;
+    bool isSend = 7;
+    uint32 sendRemainDiamond = 8;
+}
+
+/* id == 129 1对1视频1分钟加时询问检查 */
+message VideoTimeMinuteCheck {
+    string videoUniqueId = 1;
+    uint32 diamond = 2;
+    string uuid = 3;
+}
+
+/* id == 130 1对1视频，错过 */
+message VideoMiss {
+    uint32 totalNum = 1;
+}
+
+/* id == 131 进房，群组活动信息 */
+message GroupActivity {
+    string ActivityId = 1;// id
+    uint64 StartAt = 2;   // 开始时间戳，东八区时间戳
+    uint64 EndAt = 3;     // 结束时间戳，东八区时间戳
+    string Banner = 4;    // banner url
+    int32 AcType = 5;     // 类型1.游戏2.比赛3.排队4.诗歌
+    string Theme = 6;     // 活动主题
+    int32 PersonNum = 7;  // 订阅人数
+    bool IsSubscribe = 8; // 我是否订阅该活动
+    string GroupId = 9;   // 群id
+}
+
+/* id == 144 邀请用户成为房间会员 */
+message RoomInviteMember {
+    string group_id = 1;
+}
+
+/* id == 145 钻石变化 */
+message DiamondChange {
+    uint32 remainDiamond = 1;
+    uint32 remainPinkDiamond = 2;
+}
+
+/* id == 146 游戏横幅 */
+message GlobalGameBanner {
+    uint32 gameType = 1; // 0.h5游戏 1.ludo 2.uno 3.dice 4.lucky wheel 5.lucky box 6.fruit
+    uint64 userId = 2;
+    string avatar = 3;
+    uint64 diamond = 4;
+    string bannerUrl = 5;
+    uint64 gameId = 6; // 1.ludo 2.uno 3.dice 4.lucky wheel 5.lucky box 6.fruit 7.slot
+}
+
+/* id == 147 羊羊匹配成功 */
+message SheepMatchSuccess {
+    uint64 match_id = 1;
+    User user = 2;
+    User otherUser = 3;
+    uint64 game_id = 4;
+}
+
+message SheepGamePlayer {
+    User user = 1;
+    bool is_win = 2;
+    int32 rank = 3;
+}
+
+/* id == 148 羊羊游戏结果 */
+message SheepGameResult {
+    uint64 match_id = 1;
+    repeated SheepGamePlayer players = 2;
+    uint64 game_id = 3;
+}
+
+/* id == 149 cp邀请 */
+message CpInvite {
+    User user = 1;
+    string msg = 2;
+}
+
+/* id == 150 cp升级 */
+message CpUpgrade {
+    User user1 = 1;
+    User user2 = 2;
+    uint32 cp_level = 3;
+    string group_id = 4;
+}
+
+/* id == 151 svip升级 */
+message SvipUpgrade {
+    User user = 1;
+    uint32 svip_level = 2;
+    string group_id = 3;
+}

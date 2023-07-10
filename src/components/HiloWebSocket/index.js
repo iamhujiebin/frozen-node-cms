@@ -1,5 +1,6 @@
 import {PubSub} from 'pubsub-js';
 import crc from "crc";
+import {HeartBeat, Login} from "@/proto/userProxy_pb"
 
 const {Buffer} = require('buffer');
 
@@ -7,6 +8,14 @@ let hiloWebsocket, hiloLockReconnect = false;
 let createHiloWebSocket = (url) => {
     hiloWebsocket = new WebSocket(url);
     hiloWebsocket.onopen = function () {
+        // login
+        console.log("come")
+        let login = new Login();
+        login.setToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjc2NDIsIkV4dGVybmFsSWQiOiI4ODkxM2Y4MWRjNzA0YjllOGUwYThiMzg5NTZlZThiMyIsImV4cCI6MTY4OTgzODE2MCwiaXNzIjoiaGlsb0FwaSJ9.5SMjYKEEsoErPedAj8U9oSID2ThHCVt4fqbbQsbsu9M")
+        const binaryData = login.serializeBinary();
+        hiloWebsocket.send(encodeMessage(1, serialNum, binaryData));
+
+        // heartbeat
         hiloHeartCheck.reset().start();
     }
     hiloWebsocket.onerror = function () {
@@ -14,7 +23,7 @@ let createHiloWebSocket = (url) => {
     };
     hiloWebsocket.onclose = function (e) {
         console.log('websocket 断开: ' + e.code + ' ' + e.reason + ' ' + e.wasClean)
-        hiloReconnect(url);
+        // hiloReconnect(url);
     }
     hiloWebsocket.onmessage = function (event) {
         // lockReconnect = true;
@@ -44,7 +53,11 @@ let hiloHeartCheck = {
             //这里发送一个心跳，后端收到后，返回一个心跳消息，
             //onmessage拿到返回的心跳就说明连接正常
             // hiloWebsocket.send("ping");
-            hiloWebsocket.send(encodeMessage(3, serialNum, "hello world wss user proxy"));
+            let heartbeat = new HeartBeat();
+            heartbeat.setExternaluid("e8694cf742454f25bf6bca833cdfa818")
+            const binaryData = heartbeat.serializeBinary();
+            console.log("data:", binaryData)
+            hiloWebsocket.send(encodeMessage(3, serialNum, binaryData));
             serialNum++
             console.log("msgId:", serialNum)
         }, this.timeout)
@@ -69,8 +82,8 @@ function dataViewToBytes(dataView) {
     return bytes;
 }
 
-function encodeMessage(msgType, serialNum, data) {
-    let userdata = stringToUint8Array(data)
+function encodeMessage(msgType, serialNum, userdata) {
+    // let userdata = stringToUint8Array(data)
     const byteArray = new Uint8Array(26);
     let dataLen = userdata.length
     const dataView = new DataView(byteArray.buffer);
