@@ -3,13 +3,7 @@ import "./index.css"
 import {useEffect, useState} from "react";
 import {httpHilo} from "@/utils";
 
-const GiftWall = ({}) => {
-    const [giftWalls, setGiftWalls] = useState([])
-    useEffect(() => {
-        httpHilo.get("/v1/gift/wall?pageIndex=1&pageSize=3").then(r => {
-            setGiftWalls(r.data)
-        })
-    }, [])
+const GiftWall = ({giftWalls}) => {
     return (
         <div style={{margin: 10}}>
             <p style={{fontWeight: 500}}>Gift Wall</p>

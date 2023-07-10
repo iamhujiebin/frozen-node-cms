@@ -4,29 +4,7 @@ import "./index.css"
 import {useEffect, useState} from "react";
 import {httpHilo} from "@/utils";
 
-const Country = ({}) => {
-    const [countries, setCountries] = useState([])
-    const [userCountry, setUserCountry] = useState('')
-    const [countryFlag, setCountryFlag] = useState('')
-    const [countryTop3, setCountryTop3] = useState([])
-    // 国家列表
-    useEffect(() => {
-        httpHilo.get("/v1/imGroup/country/prior").then(r => {
-            setCountries([...r.data, {more: 1}])
-        })
-    }, [])
-    // 国家top3
-    useEffect(() => {
-        httpHilo.get("/v1/user/detail").then(r => {
-            setUserCountry(r.data.country)
-            httpHilo.get(`/v1/user/country/top?country=${r.data.country}`).then(r => {
-                if (r.data.countryIcon?.length > 0) {
-                    setCountryFlag(r.data.countryIcon)
-                }
-                setCountryTop3(r.data.userDiamond)
-            })
-        })
-    }, [])
+const Country = ({countries, userCountry, countryFlag, countryTop3}) => {
     return (
         <div style={{margin: 10}}>
             <p style={{fontWeight: 500}}>Countries</p>

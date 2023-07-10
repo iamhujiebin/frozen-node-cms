@@ -2,13 +2,7 @@ import {useEffect, useState} from "react";
 import {httpHilo} from "@/utils";
 
 
-const Event = ({}) => {
-    const [events, setEvents] = useState([])
-    useEffect(() => {
-        httpHilo.get("/v1/discovery/banner/list?pageIndex=1&pageSize=10").then(r => {
-            setEvents(r.data)
-        })
-    }, [])
+const Event = ({events}) => {
     return (
         <div style={{margin: 10}}>
             <p style={{fontWeight: 500}}>Event</p>

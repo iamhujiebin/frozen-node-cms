@@ -3,13 +3,7 @@ import {TeamOutline} from 'antd-mobile-icons'
 import {useEffect, useState} from "react";
 import {httpHilo} from "@/utils";
 
-const Activities = ({}) => {
-    const [activities, setActivities] = useState([])
-    useEffect(() => {
-        httpHilo.get("/v1/group/activity?type=0&pageSize=12&pageIndex=1&groupId=").then(r => {
-            setActivities(r.data.data)
-        })
-    }, [])
+const Activities = ({activities}) => {
     return (
         <div style={{margin: 10}}>
             <p style={{fontWeight: 500}}>Activities</p>

@@ -2,15 +2,8 @@ import "./index.css"
 import React, {useEffect, useState} from "react";
 import {httpHilo} from "@/utils";
 
-const Broadcast = ({}) => {
+const Broadcast = ({broadcast}) => {
     const [idx, setIdx] = useState([0, 1, 2])
-    const [broadcast, setBroadcast] = useState([])
-    useEffect(() => {
-        httpHilo.get("/v1/user/global/broadcast?pageIndex=0&pageSize=50").then(r => {
-            setBroadcast(r.data)
-        })
-    }, [])
-
     useEffect(() => {
         const interval = setInterval(() => {
             setIdx(prevIdx => {

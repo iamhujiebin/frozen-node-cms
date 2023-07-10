@@ -64,6 +64,9 @@ function Hilo() {
     }, [])
     useEffect(() => {
         console.log(page)
+        if (page === 'discover') {
+            doDiscover()
+        }
     }, [page])
     const onTabChange = (value) => {
         setTab(value)
@@ -112,69 +115,111 @@ function Hilo() {
         }
     }
 
-    return (
-        <>
-            {/*头部搜索*/}
-            <Header page={page} setPage={setPage}/>
-            {page === 'popular' && (
-                <div style={{margin: 5, marginTop: -40}}>
-                    {/*banners*/}
-                    <Banner banners={banners}/>
-                    {/*三个排行*/}
-                    <Grid columns={3} gap={10} style={{marginTop: 5}}>
-                        <Grid.Item>
-                            <RankFamily family={family}/>
-                        </Grid.Item>
-                        <Grid.Item>
-                            <RankBillboard billboard={billboard}/>
-                        </Grid.Item>
-                        <Grid.Item>
-                            <RankCp cp={cp}/>
-                        </Grid.Item>
-                    </Grid>
-                    <Divider style={{
-                        borderStyle: 'dashed',
-                    }}/>
-                    {/*群组列表*/}
-                    <Tabs style={{marginTop: -20}} defaultActiveKey='popular' onChange={(key) => onTabChange(key)}>
-                        <Tabs.Tab title='Popular' key='popular'>
-                            <PullToRefresh onRefresh={() => doRefreshPopular(1)}>
-                                {tab === 'popular' && (groups.map((item, index) => <Group key={index}
-                                                                                          avatar={item.faceUrl}
-                                                                                          medals={[{"picUrl": item.countryIcon}, ...item.groupMedals]}
-                                                                                          name={item.name}
-                                                                                          notify={item.notification}
-                                                                                          hit={item.groupInUserDuration}
-                                                                                          maxStage={item.maxStage}/>))}
-                                <InfiniteScroll loadMore={() => doRefreshPopular(pageIndexPopular)}
-                                                hasMore={hasMorePopular}/>
-                            </PullToRefresh>
-                        </Tabs.Tab>
-                        <Tabs.Tab title='New' key='new'>
-                            <PullToRefresh onRefresh={() => doRefreshNew(1)}>
-                                {tab === 'new' && news.map((item, index) => <Group key={index} avatar={item.faceUrl}
-                                                                                   medals={[{"picUrl": item.countryIcon}, ...item.groupMedals]}
-                                                                                   name={item.name}
-                                                                                   notify={item.notification}
-                                                                                   hit={item.groupInUserDuration}
-                                                                                   maxStage={item.maxStage}/>)}
-                                <InfiniteScroll loadMore={() => doRefreshNew(pageIndexNew)} hasMore={hasMoreNews}/>
-                            </PullToRefresh>
-                        </Tabs.Tab>
-                    </Tabs>
-                </div>
-            )}
-            {page === 'discover' && (
-                <>
-                    <Country/>
-                    <GiftWall/>
-                    <Broadcast/>
-                    <Activities/>
-                    <Event/>
-                </>
-            )}
-        </>
-    )
+    // discover相关
+    const [discoverLoad, setDiscoverLoad] = useState(false)
+    const [countries, setCountries] = useState([])
+    const [userCountry, setUserCountry] = useState('')
+    const [countryFlag, setCountryFlag] = useState('')
+    const [countryTop3, setCountryTop3] = useState([])
+    const [giftWalls, setGiftWalls] = useState([])
+    const [broadcast, setBroadcast] = useState([])
+    const [activities, setActivities] = useState([])
+    const [events, setEvents] = useState([])
+
+    const doDiscover = (() => {
+        if (discoverLoad) {
+            return
+        }
+        setDiscoverLoad(true)
+        // 国家列表
+        httpHilo.get("/v1/imGroup/country/prior").then(r => {
+            setCountries([...r.data, {more: 1}])
+        })
+        // 国家top3
+        httpHilo.get("/v1/user/detail").then(r => {
+            setUserCountry(r.data.country)
+            httpHilo.get(`/v1/user/country/top?country=${r.data.country}`).then(r => {
+                if (r.data.countryIcon?.length > 0) {
+                    setCountryFlag(r.data.countryIcon)
+                }
+                setCountryTop3(r.data.userDiamond)
+            })
+        })
+        // 礼物墙
+        httpHilo.get("/v1/gift/wall?pageIndex=1&pageSize=3").then(r => {
+            setGiftWalls(r.data)
+        })
+        // 广播
+        httpHilo.get("/v1/user/global/broadcast?pageIndex=0&pageSize=50").then(r => {
+            setBroadcast(r.data)
+        })
+        // 活动
+        httpHilo.get("/v1/group/activity?type=0&pageSize=12&pageIndex=1&groupId=").then(r => {
+            setActivities(r.data.data)
+        })
+        // 事件
+        httpHilo.get("/v1/discovery/banner/list?pageIndex=1&pageSize=10").then(r => {
+            setEvents(r.data)
+        })
+    })
+    return (<>
+        {/*头部搜索*/}
+        <Header page={page} setPage={setPage}/>
+        {page === 'popular' && (<div style={{margin: 5, marginTop: -40}}>
+            {/*banners*/}
+            <Banner banners={banners}/>
+            {/*三个排行*/}
+            <Grid columns={3} gap={10} style={{marginTop: 5}}>
+                <Grid.Item>
+                    <RankFamily family={family}/>
+                </Grid.Item>
+                <Grid.Item>
+                    <RankBillboard billboard={billboard}/>
+                </Grid.Item>
+                <Grid.Item>
+                    <RankCp cp={cp}/>
+                </Grid.Item>
+            </Grid>
+            <Divider style={{
+                borderStyle: 'dashed',
+            }}/>
+            {/*群组列表*/}
+            <Tabs style={{marginTop: -20}} defaultActiveKey='popular' onChange={(key) => onTabChange(key)}>
+                <Tabs.Tab title='Popular' key='popular'>
+                    <PullToRefresh onRefresh={() => doRefreshPopular(1)}>
+                        {tab === 'popular' && (groups.map((item, index) => <Group key={index}
+                                                                                  avatar={item.faceUrl}
+                                                                                  medals={[{"picUrl": item.countryIcon}, ...item.groupMedals]}
+                                                                                  name={item.name}
+                                                                                  notify={item.notification}
+                                                                                  hit={item.groupInUserDuration}
+                                                                                  maxStage={item.maxStage}/>))}
+                        <InfiniteScroll loadMore={() => doRefreshPopular(pageIndexPopular)}
+                                        hasMore={hasMorePopular}/>
+                    </PullToRefresh>
+                </Tabs.Tab>
+                <Tabs.Tab title='New' key='new'>
+                    <PullToRefresh onRefresh={() => doRefreshNew(1)}>
+                        {tab === 'new' && news.map((item, index) => <Group key={index} avatar={item.faceUrl}
+                                                                           medals={[{"picUrl": item.countryIcon}, ...item.groupMedals]}
+                                                                           name={item.name}
+                                                                           notify={item.notification}
+                                                                           hit={item.groupInUserDuration}
+                                                                           maxStage={item.maxStage}/>)}
+                        <InfiniteScroll loadMore={() => doRefreshNew(pageIndexNew)} hasMore={hasMoreNews}/>
+                    </PullToRefresh>
+                </Tabs.Tab>
+            </Tabs>
+        </div>)}
+        {page === 'discover' && (<>
+            <Country countries={countries} userCountry={userCountry} countryFlag={countryFlag}
+                     countryTop3={countryTop3}/>
+            <GiftWall giftWalls={giftWalls}/>
+            <Broadcast broadcast={broadcast}/>
+            <Activities activities={activities}/>
+            <Event events={events}/>
+        </>)}
+    </>)
 }
 
 export default Hilo
