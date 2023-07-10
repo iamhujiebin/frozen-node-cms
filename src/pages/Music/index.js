@@ -38,6 +38,12 @@ const Music = () => {
     const [playlistId, setPlaylistId] = useState(0)
     const [playlist, setPlaylist] = useState([])
     useEffect(() => {
+        if (currentLyric.length > 2 && matchedTimeIndex.length > 0 && matchedTimeIndex[0] !== 0) {
+            document.title = currentLyric[2]
+            console.log("动态设置标题:", document.title)
+        }
+    }, [matchedTimeIndex, currentLyric])
+    useEffect(() => {
         document.body.style.overflow = "hidden" // 防止移动端下拉刷新。进入页面时给body添加行类样式 overflow:hidden
         return () => {
             document.body.style.overflow = "visible" //离开页面时给body还原 overflow 为默认值
