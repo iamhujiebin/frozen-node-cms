@@ -5,7 +5,8 @@ import {createHiloWebSocket, closeHiloWebSocket} from "@/components/HiloWebSocke
 const Test = () => {
 
     useEffect(() => {
-        createHiloWebSocket("ws://127.0.0.1:8082/ws");
+        // createHiloWebSocket("ws://127.0.0.1:8082/ws");
+        createHiloWebSocket("wss://test.ws.faceline.live/ws");
         return closeHiloWebSocket()
     }, []);
 

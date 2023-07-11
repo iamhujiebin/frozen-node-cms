@@ -1,6 +1,6 @@
 import {PubSub} from 'pubsub-js';
 import crc from "crc";
-import {HeartBeat, Login} from "@/proto/userProxy_pb"
+import {HeartBeat, Login, GlobalGiftBanner} from "@/proto/userProxy_pb"
 
 const {Buffer} = require('buffer');
 
@@ -28,9 +28,41 @@ let createHiloWebSocket = (url) => {
     hiloWebsocket.onmessage = function (event) {
         // lockReconnect = true;
         //event 为服务端传输的消息，在这里可以处理
-        PubSub.publish('message', event.data);
+        readBlob(event.data)
+            .then(data => {
+                // 读取成功，data为ArrayBuffer类型的数据
+                let decode = decodeMessage(data)
+                console.log("解码成功:", decode)
+                if (decode.msgType === 115) { // 送礼的
+                    // let gift = new GlobalGiftBanner();
+                    const gift = GlobalGiftBanner.deserializeBinary(decode.userdata);
+                    console.log("有人送礼:", gift.getGiftpicurl())
+                }
+            })
+            .catch(error => {
+                // 读取失败
+                console.error("解码失败:", error)
+            });
+        // PubSub.publish('message', event.data);
     }
 }
+
+function readBlob(blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = () => {
+            resolve(reader.result);
+        };
+
+        reader.onerror = () => {
+            reject(new Error('Failed to read the Blob'));
+        };
+
+        reader.readAsArrayBuffer(blob);
+    });
+}
+
 let hiloReconnect = (url) => {
     if (hiloLockReconnect) return;
     //没连接上会一直重连，设置延迟避免请求过多
@@ -56,10 +88,8 @@ let hiloHeartCheck = {
             let heartbeat = new HeartBeat();
             heartbeat.setExternaluid("e8694cf742454f25bf6bca833cdfa818")
             const binaryData = heartbeat.serializeBinary();
-            console.log("data:", binaryData)
             hiloWebsocket.send(encodeMessage(3, serialNum, binaryData));
             serialNum++
-            console.log("msgId:", serialNum)
         }, this.timeout)
     }
 }
@@ -107,6 +137,24 @@ function encodeMessage(msgType, serialNum, userdata) {
     const finalView = new DataView(result.buffer);
     finalView.setUint32(26 + dataLen, checkSum)
     return result
+}
+
+function decodeMessage(encodedData) {
+    const dataView = new DataView(encodedData);
+
+    const msgType = dataView.getUint32(2, false);
+    const serialNum = dataView.getBigUint64(6, false);
+    const timestamp = dataView.getBigUint64(14, false);
+    const dataLen = dataView.getUint32(22, false);
+
+    const userdata = encodedData.slice(26, 26 + dataLen);
+
+    return {
+        msgType,
+        serialNum,
+        timestamp,
+        userdata,
+    };
 }
 
 //关闭连接
