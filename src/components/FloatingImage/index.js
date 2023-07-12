@@ -15,7 +15,7 @@ const FloatingImage = ({gift, setShow}) => {
         }, 1000);
 
         const timeout2 = setTimeout(() => {
-            // setShow(false) // todo 最后打开消失
+            setShow(false)
         }, 2000);
 
         // 清除监听器和计时器
@@ -30,18 +30,18 @@ const FloatingImage = ({gift, setShow}) => {
              style={{height: 40, width: 200, backgroundColor: "#e9aefd", padding: 5, borderRadius: "5%"}}>
             <Grid columns={10}>
                 <Grid.Item span={2}>
-                    <img src={gift.getSenduseravatar()} alt='' style={{width: 30, height: 30, borderRadius: "50%"}}/>
+                    <img src={gift?.getSenduseravatar()} alt='' style={{width: 30, height: 30, borderRadius: "50%"}}/>
                 </Grid.Item>
                 <Grid.Item span={6}>
                     <Space direction='vertical' style={{"--gap": "-10px"}}>
-                        <p style={{color: "orange"}}>{gift.getSendusernick()}</p>
-                        <p>Send <span style={{color: "orange"}}>{gift.getReceiveusernick().slice(0, 7)}</span> gift
-                            <span style={{color: "orange"}}>x{gift.getGiftnum()}</span>
+                        <p style={{color: "orange"}}>{gift?.getSendusernick()}</p>
+                        <p>Send <span style={{color: "orange"}}>{gift?.getReceiveusernick().slice(0, 7)}</span> gift
+                            <span style={{color: "orange"}}>x{gift?.getGiftnum()}</span>
                         </p>
                     </Space>
                 </Grid.Item>
                 <Grid.Item span={2}>
-                    <img src={gift.getGiftpicurl()} alt='' style={{width: 30, height: 30, borderRadius: "50%"}}/>
+                    <img src={gift?.getGiftpicurl()} alt='' style={{width: 30, height: 30, borderRadius: "50%"}}/>
                 </Grid.Item>
             </Grid>
         </div>
