@@ -29,33 +29,6 @@ function Hilo() {
     const [lastIdNew, setLastIdNew] = useState(0)
     const [page, setPage] = useState('popular') // popular | discover
 
-    const [show, setShow] = useState(false)
-    const [gift, setGift] = useState(null)
-    // 礼物banner
-    useEffect(() => {
-        createHiloWebSocket("wss://test.ws.faceline.live/ws");
-        return closeHiloWebSocket()
-    }, []);
-
-    let messageSocket = null
-    useEffect(() => {
-        // console.log("listening to message")
-        //订阅 'message' 发布的发布的消息
-        if (!messageSocket) {
-            messageSocket = PubSub.subscribe('gift_send', function (topic, message) {
-                //message 为接收到的消息
-                // 重新加载消息列表
-                console.log("recieve gift send:", topic, message)
-                setGift(message)
-                // setImg(message.getGiftpicurl())
-                setShow(true)
-            })
-        }
-        //卸载组件 取消订阅
-        return () => {
-            PubSub.unsubscribe(messageSocket);
-        }
-    })
     useEffect(() => {
         httpHilo.get("/v1/imGroup/banner/list").then(r => {
             if (r.data?.length > 0) {
@@ -195,8 +168,7 @@ function Hilo() {
     })
     return (<>
         {/*礼物横幅*/}
-        {show && <FloatingImage setShow={setShow}
-                                gift={gift}/>}
+        {<FloatingImage/>}
         {/*头部搜索*/}
         <Header page={page} setPage={setPage}/>
         {page === 'popular' && (<div style={{margin: 5, marginTop: -40}}>
