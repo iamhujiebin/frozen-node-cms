@@ -2,16 +2,14 @@ import {PubSub} from 'pubsub-js';
 import crc from "crc";
 import {HeartBeat, Login, GlobalGiftBanner} from "@/proto/userProxy_pb"
 
-const {Buffer} = require('buffer');
-
 let hiloWebsocket, hiloLockReconnect = false;
 let createHiloWebSocket = (url) => {
     hiloWebsocket = new WebSocket(url);
     hiloWebsocket.onopen = function () {
         // login
-        console.log("come")
+        console.log("connected!")
         let login = new Login();
-        login.setToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjc2NDIsIkV4dGVybmFsSWQiOiI4ODkxM2Y4MWRjNzA0YjllOGUwYThiMzg5NTZlZThiMyIsImV4cCI6MTY4OTgzODE2MCwiaXNzIjoiaGlsb0FwaSJ9.5SMjYKEEsoErPedAj8U9oSID2ThHCVt4fqbbQsbsu9M")
+        login.setToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjQ1MTAsIkV4dGVybmFsSWQiOiI0NDc0YWM3NGMxN2U0MmY0ODIwNTg2Mjc5ZWRhMzdjOSIsImV4cCI6MTY4OTk5MzQzMiwiaXNzIjoiaGlsb0FwaSJ9.mCQ8cKGv4nw-P3qpclUjnVhLz5gLIT7ayepmpbiG6Rg")
         const binaryData = login.serializeBinary();
         hiloWebsocket.send(encodeMessage(1, serialNum, binaryData));
 
@@ -26,24 +24,22 @@ let createHiloWebSocket = (url) => {
         // hiloReconnect(url);
     }
     hiloWebsocket.onmessage = function (event) {
-        // lockReconnect = true;
+        hiloLockReconnect = true;
         //event 为服务端传输的消息，在这里可以处理
         readBlob(event.data)
             .then(data => {
                 // 读取成功，data为ArrayBuffer类型的数据
                 let decode = decodeMessage(data)
-                console.log("解码成功:", decode)
+                // console.log("解码成功:", decode)
                 if (decode.msgType === 115) { // 送礼的
-                    // let gift = new GlobalGiftBanner();
                     const gift = GlobalGiftBanner.deserializeBinary(decode.userdata);
-                    console.log("有人送礼:", gift.getGiftpicurl())
+                    PubSub.publish('gift_send', gift);
                 }
             })
             .catch(error => {
                 // 读取失败
                 console.error("解码失败:", error)
             });
-        // PubSub.publish('message', event.data);
     }
 }
 
@@ -94,26 +90,7 @@ let hiloHeartCheck = {
     }
 }
 
-function stringToUint8Array(str) {
-    let arr = [];
-    for (let i = 0, j = str.length; i < j; ++i) {
-        arr.push(str.charCodeAt(i));
-    }
-
-    let tmpUint8Array = new Uint8Array(arr);
-    return tmpUint8Array
-}
-
-function dataViewToBytes(dataView) {
-    const bytes = [];
-    for (let i = 0; i < dataView.byteLength; i++) {
-        bytes.push(dataView.getUint8(i));
-    }
-    return bytes;
-}
-
 function encodeMessage(msgType, serialNum, userdata) {
-    // let userdata = stringToUint8Array(data)
     const byteArray = new Uint8Array(26);
     let dataLen = userdata.length
     const dataView = new DataView(byteArray.buffer);

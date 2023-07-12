@@ -1,0 +1,25 @@
+.float-in {
+    animation: float-in 1s ease-in;
+}
+
+.float-out {
+    animation: float-out 1s ease-out;
+}
+
+@keyframes float-in {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes float-out {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
