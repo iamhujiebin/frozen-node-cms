@@ -69,7 +69,7 @@ const FloatingImage = () => {
     }, [giftList, show])
 
     return (
-        <div className={"float-div"}>
+        <div className={"float-div"} style={{zIndex: show ? 1 : -1}}>
             {show && (<div id="floating-image" className={animationClass}
                            style={{
                                height: 40,
