@@ -7,6 +7,7 @@ import {PubSub} from "pubsub-js";
 const FloatingImage = () => {
     const [show, setShow] = useState(false)
     const [gift, setGift] = useState(null)
+    const [giftList, setGiftList] = useState([])
     // 礼物banner
     useEffect(() => {
         createHiloWebSocket("wss://test.ws.faceline.live/ws");
@@ -15,16 +16,15 @@ const FloatingImage = () => {
 
     let messageSocket = null
     useEffect(() => {
-        // console.log("listening to message")
-        //订阅 'message' 发布的发布的消息
+        // 订阅 'message' 发布的发布的消息
         if (!messageSocket) {
             messageSocket = PubSub.subscribe('gift_send', function (topic, message) {
-                //message 为接收到的消息
                 // 重新加载消息列表
                 console.log("recieve gift send:", topic, message)
-                setGift(message)
-                // setImg(message.getGiftpicurl())
-                setShow(true)
+                setGiftList(pre => {
+                    return [...pre, message]
+                })
+                console.log("gift list append:", giftList)
             })
         }
         //卸载组件 取消订阅
@@ -54,12 +54,26 @@ const FloatingImage = () => {
         };
     }, [gift]);
 
+    useEffect(() => {
+        if (!show && giftList.length > 0) {
+            setShow(true)
+            setGift(giftList[0])
+            setGiftList(pre => {
+                if (pre.length <= 1) {
+                    setGiftList([])
+                } else {
+                    setGiftList(pre.slice(1, pre.length))
+                }
+            })
+        }
+    }, [giftList, show])
+
     return (
         <div className={"float-div"}>
             {show && (<div id="floating-image" className={animationClass}
                            style={{
                                height: 40,
-                               width: 200,
+                               width: 240,
                                backgroundColor: "#e9aefd",
                                padding: 5,
                                borderRadius: "5%",

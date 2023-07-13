@@ -8,7 +8,6 @@
 
 .float-in {
     animation: float-in 1s ease-in;
-    /*position: absolute;*/
     top: 6px;
     z-index: 1;
     text-align: center;
@@ -24,7 +23,6 @@
 
 .float-out {
     animation: float-out 1s ease-out;
-    /*position: absolute;*/
     top: 6px;
     z-index: 1;
     text-align: center;
