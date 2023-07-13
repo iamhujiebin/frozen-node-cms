@@ -9,7 +9,7 @@ let createHiloWebSocket = (url) => {
         // login
         console.log("connected!")
         let login = new Login();
-        login.setToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjQ1MTAsIkV4dGVybmFsSWQiOiI0NDc0YWM3NGMxN2U0MmY0ODIwNTg2Mjc5ZWRhMzdjOSIsImV4cCI6MTY4OTk5MzQzMiwiaXNzIjoiaGlsb0FwaSJ9.mCQ8cKGv4nw-P3qpclUjnVhLz5gLIT7ayepmpbiG6Rg")
+        login.setToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjc2NTcwOTEsIkV4dGVybmFsSWQiOiIyNzMzODczM2VmOTM0N2ZmODdkNmEwYzUwY2Q1NjU3ZSIsImV4cCI6MjU1MzIyNzI1NCwiaXNzIjoiaGlsb0FwaSJ9.bcM1JlBlPlUIrmSS139klm_Zs-sdb3g0drtaP2Mz0NE")
         const binaryData = login.serializeBinary();
         hiloWebsocket.send(encodeMessage(1, serialNum, binaryData));
 

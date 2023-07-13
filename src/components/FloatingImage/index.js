@@ -10,7 +10,7 @@ const FloatingImage = () => {
     const [giftList, setGiftList] = useState([])
     // 礼物banner
     useEffect(() => {
-        createHiloWebSocket("wss://test.ws.faceline.live/ws");
+        createHiloWebSocket("wss://ws.faceline.live/ws");
         return closeHiloWebSocket()
     }, []);
 

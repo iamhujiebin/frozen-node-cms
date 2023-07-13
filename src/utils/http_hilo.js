@@ -9,7 +9,7 @@ const httpHilo = axios.create({
 // 请求拦截器
 // config: http的config
 httpHilo.interceptors.request.use((config) => {
-    let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjE3NjMyMTEsIkV4dGVybmFsSWQiOiJkYTllMTJhM2I0ZGU0YWE5Yjc2MjBlNDllYzUyMTliYyIsImV4cCI6MTY5MTEzMzQyNiwiaXNzIjoiaGlsb0FwaSJ9.ew1BaqGNM34_etSoR3mFLiu7QYJX1KeIhrgBUSLlJXw"
+    let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjc2NTcwOTEsIkV4dGVybmFsSWQiOiIyNzMzODczM2VmOTM0N2ZmODdkNmEwYzUwY2Q1NjU3ZSIsImV4cCI6MjU1MzIyNzI1NCwiaXNzIjoiaGlsb0FwaSJ9.bcM1JlBlPlUIrmSS139klm_Zs-sdb3g0drtaP2Mz0NE"
     if (getHiloToken()) {
         token = getHiloToken()
     }
