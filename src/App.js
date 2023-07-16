@@ -18,6 +18,7 @@ import Album from "@/pages/Album";
 import Music from "@/pages/Music";
 import SvgaVap from "@/pages/SvgaVap";
 import Hilo from "@/pages/Hilo";
+import Word from "@/pages/Word";
 
 const Detail = lazy(() => import("@/pages/Detail"))
 const Login = lazy(() => import('@/pages/Login'))
@@ -51,6 +52,7 @@ function App() {
                         <Route path='antddemo' element={<AntdDemo/>}/>
                         <Route path='music' element={<Music/>}/>
                         <Route path='svgavap' element={<SvgaVap/>}/>
+                        <Route path='word' element={<Word/>}/>
                     </Route>
                     <Route path='/login' element={<Login/>}/>
                     <Route path='/detail' element={<Detail/>}/>

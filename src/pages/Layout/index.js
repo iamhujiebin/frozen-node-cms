@@ -11,7 +11,8 @@ import {
     ForwardOutlined,
     InstagramOutlined,
     PlayCircleOutlined,
-    WechatOutlined
+    WechatOutlined,
+    FileWordOutlined
 } from '@ant-design/icons'
 import {Link, Outlet, useLocation, useNavigate} from 'react-router-dom'
 import {useStore} from '@/store'
@@ -68,8 +69,13 @@ const CMSLayout = () => {
             label: (<Link to='/svgavap'>SVGA-VAP</Link>)
         },
         {
+            key: '/word',
+            icon: <FileWordOutlined/>,
+            label: (<Link to='/word'>咒语生成器</Link>)
+        },
+        {
             key: '/hilo',
-            icon: <WechatOutlined />,
+            icon: <WechatOutlined/>,
             label: (<Link to='/hilo'>Hilo</Link>)
         },
         // {
