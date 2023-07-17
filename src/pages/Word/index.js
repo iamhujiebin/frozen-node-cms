@@ -1,32 +1,47 @@
 import {Col, Divider, Input, Row, Tabs} from "antd";
 import WordBlock from "@/pages/Word/WordBlock";
 import {useEffect, useState} from "react";
+import {http} from "@/utils";
 
 const {TextArea} = Input
 
 const items = ['常用', '人物', '角色', '五官', '表情', '头发', '装饰', '服装', '鞋饰', '尾&翅&角', '姿势', '动作', '环境', '风格']
 
-function WordContent({setContent}) {
+function WordContent({subTabs, setContent}) {
 
     return (
-        <>
-            <div>
-                <Divider orientation="left">其他常用</Divider>
-                <Row gutter={[16, 24]}>
-                    {items.map((item, index) => (
-                        <Col key={index}>
-                            <WordBlock id={index} content={item} setContent={setContent}></WordBlock>
-                        </Col>
-                    ))}
-                </Row>
-            </div>
-        </>
+        <div>
+            {
+                subTabs.map(item => (
+                    <div>
+                        <Divider orientation="left">{item.name.zh}</Divider>
+                        <Row gutter={[16, 24]}>
+                            {
+                                item.prompts.map((prompts, index) => (
+                                    <Col key={index}>
+                                        <WordBlock id={prompts.code} content={prompts.zh}
+                                                   setContent={setContent}></WordBlock>
+                                    </Col>
+                                ))
+                            }
+                        </Row>
+                    </div>
+                ))
+            }
+        </div>
     )
 }
 
 function Word() {
+    const [data, setData] = useState([])
     const [value, setValue] = useState('')
     const [content, setContent] = useState({list: {}})
+    useEffect(() => {
+        http.get("/ai/prompts").then(r => {
+            console.log(r.data)
+            setData(r.data)
+        })
+    }, [])
     useEffect(() => {
         let valueList = []
         for (let id in content.list) {
@@ -52,15 +67,15 @@ function Word() {
                     width: "70%",
                     float: "left",
                 }}
-                items={items.map((item, i) => {
+                items={data.map((item, i) => {
                     const id = String(i);
                     return {
-                        label: `${item}`,
+                        label: `${item.name.zh}`,
                         key: id,
                         disabled: i === 28,
                         children: (
                             <div>
-                                <WordContent setContent={setContent}/>
+                                <WordContent subTabs={item.subTabs} setContent={setContent}/>
                             </div>
                         ),
                     };
@@ -71,7 +86,14 @@ function Word() {
                 value={value}
                 showCount
                 maxLength={100}
-                style={{float: "left", width: "30%", height: 520, marginBottom: 24, resize: 'none'}}
+                style={{
+                    float: "left",
+                    width: "30%",
+                    height: 520,
+                    marginBottom: 24,
+                    resize: 'none',
+                    marginTop: 15,
+                }}
             />
         </div>
     )
