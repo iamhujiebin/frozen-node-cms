@@ -1,21 +1,18 @@
 import {Col, Divider, Input, Row, Tabs} from "antd";
 import WordBlock from "@/pages/Word/WordBlock";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {http} from "@/utils";
 
 const {TextArea} = Input
 
-const items = ['常用', '人物', '角色', '五官', '表情', '头发', '装饰', '服装', '鞋饰', '尾&翅&角', '姿势', '动作', '环境', '风格']
-
 function WordContent({subTabs, setContent}) {
-
     return (
         <div>
             {
                 subTabs.map(item => (
                     <div>
                         <Divider orientation="left">{item.name.zh}</Divider>
-                        <Row gutter={[16, 24]}>
+                        <Row gutter={[3, 16]}>
                             {
                                 item.prompts.map((prompts, index) => (
                                     <Col key={index}>
@@ -36,6 +33,16 @@ function Word() {
     const [data, setData] = useState([])
     const [value, setValue] = useState('')
     const [content, setContent] = useState({list: {}})
+    const followDivRef = useRef(null)
+
+    const handleScroll = () => {
+        this.followDivRef.current.style.top = window.pageYOffset + 'px';
+    }
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return window.removeEventListener('scroll', handleScroll);
+    }, [])
+
     useEffect(() => {
         http.get("/ai/prompts").then(r => {
             console.log(r.data)
@@ -58,43 +65,47 @@ function Word() {
     }, [content])
     return (
         <div style={{width: "100%"}}>
-            <Tabs
-                defaultActiveKey="1"
-                tabPosition={"top"}
-                size={"large"}
+            <div style={{height: "auto", width: "70%", float: "left"}}>
+                <Tabs
+                    defaultActiveKey="1"
+                    tabPosition={"top"}
+                    size={"large"}
+                    items={data.map((item, i) => {
+                        const id = String(i);
+                        return {
+                            label: `${item.name.zh}`,
+                            key: id,
+                            disabled: i === 28,
+                            children: (
+                                <div>
+                                    <WordContent subTabs={item.subTabs} setContent={setContent}/>
+                                </div>
+                            ),
+                        };
+                    })}
+                />
+            </div>
+            <div
+                ref={followDivRef}
                 style={{
-                    height: 220,
-                    width: "70%",
-                    float: "left",
-                }}
-                items={data.map((item, i) => {
-                    const id = String(i);
-                    return {
-                        label: `${item.name.zh}`,
-                        key: id,
-                        disabled: i === 28,
-                        children: (
-                            <div>
-                                <WordContent subTabs={item.subTabs} setContent={setContent}/>
-                            </div>
-                        ),
-                    };
-                })}
-            />
-            <TextArea
-                size={"large"}
-                value={value}
-                showCount
-                maxLength={100}
-                style={{
-                    float: "left",
-                    width: "30%",
-                    height: 520,
+                    float: "right",
+                    width: "25%",
                     marginBottom: 24,
-                    resize: 'none',
                     marginTop: 15,
-                }}
-            />
+                    position: "fixed",
+                    top: 100,
+                    right: 10,
+                }}>
+                <TextArea
+                    size={"large"}
+                    value={value}
+                    showCount
+                    maxLength={100}
+                    style={{
+                        height: 520,
+                    }}
+                />
+            </div>
         </div>
     )
 }
