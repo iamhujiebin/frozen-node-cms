@@ -1,5 +1,6 @@
 import "./index.css"
-import {Divider} from "antd";
+import {Divider, Space} from "antd";
+import {CheckCircleTwoTone, HeartTwoTone} from '@ant-design/icons';
 
 const ABlock = () => {
     return (
@@ -8,6 +9,10 @@ const ABlock = () => {
                  alt={''}/>
             <img src="http://47.244.34.27:7002/uploads/file/9ab62b5ef34a985438bfdf7ee0102229_20230719184704.png"
                  alt={''}/>
+            <Space direction="vertical">
+                <HeartTwoTone twoToneColor="#eb2f96"/>
+                <CheckCircleTwoTone twoToneColor="#52c41a"/>
+            </Space>
             <Divider/>
         </div>
     )
