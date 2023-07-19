@@ -12,7 +12,8 @@ import {
     InstagramOutlined,
     PlayCircleOutlined,
     WechatOutlined,
-    FileWordOutlined
+    FileWordOutlined,
+    RedditOutlined
 } from '@ant-design/icons'
 import {Link, Outlet, useLocation, useNavigate} from 'react-router-dom'
 import {useStore} from '@/store'
@@ -43,6 +44,11 @@ const CMSLayout = () => {
         //     icon: <FormOutlined/>,
         //     label: (<Link to='/todo'>todolist</Link>),
         // },
+        // {
+        //     key: '/antddemo',
+        //     icon: <FormOutlined/>,
+        //     label: (<Link to='/antddemo'>antddemo</Link>)
+        // }
         {
             key: '/camera',
             icon: <VideoCameraAddOutlined/>,
@@ -74,15 +80,15 @@ const CMSLayout = () => {
             label: (<Link to='/word'>咒语生成器</Link>)
         },
         {
+            key: '/aiimage',
+            icon: <RedditOutlined/>,
+            label: (<Link to='/aiimage'>Ai生成图片</Link>)
+        },
+        {
             key: '/hilo',
             icon: <WechatOutlined/>,
             label: (<Link to='/hilo'>Hilo</Link>)
         },
-        // {
-        //     key: '/antddemo',
-        //     icon: <FormOutlined/>,
-        //     label: (<Link to='/antddemo'>antddemo</Link>)
-        // }
     ]
     let siderWidth = 200
     let initCollapsed = false

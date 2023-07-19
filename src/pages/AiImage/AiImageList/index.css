@@ -1,0 +1,12 @@
+.ai-image-list {
+    /*display: flex;*/
+    /*justify-content: flex-end;*/
+}
+
+.ai-image-list > img {
+    max-width: 100px;
+    max-height: 100px;
+    margin: 0 5px 0 5px;
+    /*text-align: right;*/
+    /*float: right;*/
+}
