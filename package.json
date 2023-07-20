@@ -42,6 +42,7 @@
     "socket.io-client": "^4.5.1",
     "source-map-explorer": "^2.5.2",
     "svgaplayerweb": "^2.3.2",
+    "tim-js-sdk": "^2.27.5",
     "video-animation-player": "^1.0.5",
     "yyeva": "^1.0.0-rc.15"
   },
