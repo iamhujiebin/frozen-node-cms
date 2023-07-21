@@ -20,6 +20,7 @@ import SvgaVap from "@/pages/SvgaVap";
 import Hilo from "@/pages/Hilo";
 import Word from "@/pages/Word";
 import AiImage from "@/pages/AiImage";
+import Test2 from "@/pages/Test2";
 
 const Detail = lazy(() => import("@/pages/Detail"))
 const Login = lazy(() => import('@/pages/Login'))
@@ -59,6 +60,7 @@ function App() {
                     <Route path='/login' element={<Login/>}/>
                     <Route path='/detail' element={<Detail/>}/>
                     <Route path='/test' element={<Test/>}/>
+                    <Route path='/test2' element={<Test2/>}/>
                     <Route path='/hilo' element={<Hilo/>}/>
                 </Routes>
             </Suspense>

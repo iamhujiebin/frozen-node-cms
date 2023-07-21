@@ -2,18 +2,16 @@ import TRTC from 'trtc-js-sdk';
 import {useEffect} from "react";
 import {Button} from "antd";
 
-const userId = '27338733ef9347ff87d6a0c50cd5657e'
-
-const HiloTrtc = () => {
+const HiloTrtc2 = () => {
     let client = null
-    let localStream = TRTC.createStream({userId, audio: true, video: true})
     useEffect(() => {
         client = TRTC.createClient({
             mode: "live",
             sdkAppId: 40000066,
-            userId: userId,
-            userSig: "eJwtzU0LgkAQBuD-sueQ1f0WOvR1ECwDhbqauxtTmptKGNF-T9OBObwPzDsflMWp9zINClHgYbT4Z9Dm0YGFiQUhclhjFaHCWik0z3HBcKEZZ8LMN62*586BRiHF43A*eQeVQaHPpZKU8oBNanoHzehicOILLOYWuA4vIVbOJvpZlSDOOl9Ffb15b1MoD8nJ1f5xne327c0oe4mW6PsDFi44tQ__",
+            userId: "da9e12a3b4de4aa9b7620e49ec5219bc",
+            userSig: "eJwtzcsOgjAQBdB-6VZDoJSWIXHjC6IkLtTEsGvpgNVoeMdH-HcVmN09yb3zJod4b3VYkYBQyybTPhuN98ZkpmctAR0qXcU0MilBCU5tZICpRx1Q6dip9VUWhdEkYPb-OB*8MTckgcN9AAGc*4PiozDV34UPvusIW4wrJv*9XF627mZymq-LtuRZ2MSQnDv1zOpFEppdXr5o5GkZrdrsOCOfL4XgOTc_",
             useStringRoomId: true,
+            autoSubscribe: true// 默认为 true 即自动订阅
         });
 
         client.on('stream-added', event => {
@@ -42,26 +40,7 @@ const HiloTrtc = () => {
         client
             .join({roomId: "HTGS#a93989299", role: 'anchor'})
             .then(() => {
-                console.log('进房成功', userId);
-                // 使用 Promise 的语法
-                localStream
-                    .initialize()
-                    .then(() => {
-                        console.log('初始化本地流成功');
-                        localStream.play('local_stream');
-                        client
-                            .publish(localStream)
-                            .then(() => {
-                                console.log('本地流发布成功');
-                            })
-                            .catch(error => {
-                                console.error('本地流发布失败 ' + error);
-                            });
-
-                    })
-                    .catch(error => {
-                        console.error('初始化本地流失败 ' + error);
-                    });
+                console.log('进房成功', 'da9e12a3b4de4aa9b7620e49ec5219bc');
             })
             .catch(error => {
                 console.error('进房失败，请稍后再试' + error);
@@ -69,10 +48,10 @@ const HiloTrtc = () => {
     }
     return (
         <>
-            hello trtc
-            <Button onClick={enterRoom}>加入房间1</Button>
+            hello trtc2
+            <Button onClick={enterRoom}>加入房间</Button>
         </>
     );
 };
 
-export default HiloTrtc;
+export default HiloTrtc2;
