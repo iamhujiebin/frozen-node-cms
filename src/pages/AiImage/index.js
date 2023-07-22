@@ -44,6 +44,8 @@ const AiImage = () => {
                 setImageList(prevState => {
                     return [r.data, ...prevState]
                 })
+            } else {
+                alert(r)
             }
         })
     }
