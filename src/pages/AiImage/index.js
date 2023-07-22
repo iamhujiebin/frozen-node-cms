@@ -47,6 +47,8 @@ const AiImage = () => {
             } else {
                 alert(r)
             }
+        }).catch(e => {
+            alert(e)
         })
     }
     return (
