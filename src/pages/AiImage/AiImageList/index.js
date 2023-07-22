@@ -11,13 +11,16 @@ const HeartSvg = () => (
 );
 const HeartIcon = (props) => <Icon component={HeartSvg} {...props} />;
 
-const ABlock = () => {
+const ABlock = ({image1, image2, placeholder, select, onclick}) => {
     const [c, setC] = useState(true)
     return (
-        <div className={'ai-image-list'}>
-            <img src="http://47.244.34.27:7002/uploads/file/a9f7e97965d6cf799a529102a973b8b9_20230719184701.png"
+        <div className={'ai-image-list'}
+             style={{boxShadow: select ? '0 0 10px rgba(0, 0, 0, 0.5)' : ''}}
+             onClick={onclick}
+        >
+            <img src={image1}
                  alt={''}/>
-            <img src="http://47.244.34.27:7002/uploads/file/9ab62b5ef34a985438bfdf7ee0102229_20230719184704.png"
+            <img src={image2}
                  alt={''}/>
             <Space direction="vertical">
                 {c && <HeartTwoTone twoToneColor="#eb2f96" onClick={() => setC(prevState => {
@@ -33,17 +36,20 @@ const ABlock = () => {
 
                 <CheckCircleTwoTone twoToneColor="#52c41a"/>
             </Space>
+            <p>{placeholder}</p>
             <Divider/>
         </div>
     )
 }
 
-const items = [1, 2]
-const AiImageList = () => {
+const AiImageList = ({imageList, placeholder, curIndex, setCurIndex}) => {
     return (
         <div>
-            {items.map(item => (
-                <ABlock/>
+            {imageList.map((item, index) => (
+                <ABlock key={index} image1={item.image1} image2={item.image2} placeholder={placeholder}
+                        select={curIndex === index}
+                        onclick={() => setCurIndex(index)}
+                />
             ))}
         </div>
     );

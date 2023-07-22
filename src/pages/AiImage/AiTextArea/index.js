@@ -1,8 +1,8 @@
-import {Input} from "antd";
+import {Button, Input} from "antd";
 
 const {TextArea} = Input;
 
-const AiTextArea = () => {
+const AiTextArea = ({prompt, setPrompt, placeholder, submit}) => {
     return (
         <>
             <TextArea
@@ -12,8 +12,11 @@ const AiTextArea = () => {
                 style={{
                     height: 320,
                 }}
-                placeholder={'promts'}
+                placeholder={placeholder}
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
             />
+            <Button type={"primary"} onClick={submit}>生成图片</Button>
         </>
     );
 };
