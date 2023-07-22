@@ -48,7 +48,7 @@ const AiImage = () => {
     }
     return (
         <div className={'container'}>
-            <div style={{flexGrow: 1}}><AiTextArea prompt={prompt} setPrompts={setPrompt} placeholder={placeholder}
+            <div style={{flexGrow: 1}}><AiTextArea prompt={prompt} setPrompt={setPrompt} placeholder={placeholder}
                                                    submit={submit}/>
             </div>
             <div style={{flexGrow: 1}}><AiBigImage image1={image1} image2={image2}/></div>
