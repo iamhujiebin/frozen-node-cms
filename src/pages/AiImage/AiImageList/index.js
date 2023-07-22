@@ -11,7 +11,7 @@ const HeartSvg = () => (
 );
 const HeartIcon = (props) => <Icon component={HeartSvg} {...props} />;
 
-const ABlock = ({image1, image2, placeholder, select, onclick}) => {
+const ABlock = ({image1, image2, prompt, select, onclick}) => {
     const [c, setC] = useState(true)
     return (
         <div className={'ai-image-list'}
@@ -36,17 +36,17 @@ const ABlock = ({image1, image2, placeholder, select, onclick}) => {
 
                 <CheckCircleTwoTone twoToneColor="#52c41a"/>
             </Space>
-            <p>{placeholder}</p>
+            <p>{prompt}</p>
             <Divider/>
         </div>
     )
 }
 
-const AiImageList = ({imageList, placeholder, curIndex, setCurIndex}) => {
+const AiImageList = ({imageList, curIndex, setCurIndex}) => {
     return (
         <div>
             {imageList.map((item, index) => (
-                <ABlock key={index} image1={item.image1} image2={item.image2} placeholder={placeholder}
+                <ABlock key={index} image1={item.image1} image2={item.image2} prompt={item.prompt}
                         select={curIndex === index}
                         onclick={() => setCurIndex(index)}
                 />

@@ -20,6 +20,7 @@ const AiImage = () => {
             setImage1(imageList[curIndex].image1)
             setImage2(imageList[curIndex].image2)
             setPlaceholder(imageList[curIndex].prompt)
+            setPrompt(imageList[curIndex].prompt)
         }
     }, [curIndex])
     const fetchImageList = () => {
@@ -52,7 +53,7 @@ const AiImage = () => {
                                                    submit={submit}/>
             </div>
             <div style={{flexGrow: 1}}><AiBigImage image1={image1} image2={image2}/></div>
-            <div style={{flexGrow: 1}}><AiImageList imageList={imageList} placeholder={placeholder} curIndex={curIndex}
+            <div style={{flexGrow: 1}}><AiImageList imageList={imageList} curIndex={curIndex}
                                                     setCurIndex={setCurIndex}/></div>
         </div>
     );
