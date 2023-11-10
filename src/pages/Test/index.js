@@ -10,10 +10,10 @@ import {Button} from "antd";
 import HiloTrtc from "@/components/HiloTrtc";
 
 const Test = () => {
-    // useEffect(() => {
-    //     createHiloWebSocket("ws://127.0.0.1:8082/ws");
-    //     return closeHiloWebSocket()
-    // }, []);
+    useEffect(() => {
+        createHiloWebSocket("ws://127.0.0.1:8082/ws");
+        return closeHiloWebSocket()
+    }, []);
 
 
     return (
