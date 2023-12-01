@@ -1,30 +1,39 @@
 import React, {useEffect, useState} from 'react';
-import {
-    closeHiloWebSocket,
-    createHiloWebSocket,
-    enterRoom,
-    leaveRoom,
-    roomHeartbeat
-} from "@/components/HiloWebSocketTest";
+import '@/assets/js/wasm_exec'
+import wasm from '@/assets/wasm/index.wasm'
 import {Button} from "antd";
-import HiloTrtc from "@/components/HiloTrtc";
 
 const Test = () => {
-    useEffect(() => {
-        createHiloWebSocket("ws://127.0.0.1:8082/ws");
-        return closeHiloWebSocket()
-    }, []);
-
-
-    return (
-        <div>
-            {/*冲！*/}
-            {/*<Button onClick={enterRoom}>进房</Button>*/}
-            {/*<Button onClick={leaveRoom}>离房</Button>*/}
-            {/*<Button onClick={roomHeartbeat}>房跳</Button>*/}
-            <HiloTrtc/>
-        </div>
-    )
+    const [isLoading, setIsLoading] = useState(true);
+    const [success, setSucess] = useState('');
+    useEffect(()=>{
+        const go = new window.Go();
+        WebAssembly.instantiateStreaming(
+            fetch(wasm),
+            go.importObject
+        ).then((result)=>{
+            go.run(result.instance)
+            setIsLoading(false)
+            setSucess('success')
+        })
+    },[])
+    if (isLoading) {
+        return (
+            <div>
+                loading WebAssembly...
+            </div>
+        );
+    } else {
+        return (
+            <div>
+                Load {success}
+                <Button onClick={()=>{
+                    let test = window.wasmEncodeDecode('hello')
+                    console.log(test)
+                }}/>
+            </div>
+        );
+    }
 };
 
 export default Test;
