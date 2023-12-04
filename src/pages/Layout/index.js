@@ -13,7 +13,8 @@ import {
     PlayCircleOutlined,
     WechatOutlined,
     FileWordOutlined,
-    RedditOutlined
+    RedditOutlined,
+    ToolOutlined
 } from '@ant-design/icons'
 import {Link, Outlet, useLocation, useNavigate} from 'react-router-dom'
 import {useStore} from '@/store'
@@ -88,6 +89,11 @@ const CMSLayout = () => {
             key: '/hilo',
             icon: <WechatOutlined/>,
             label: (<Link to='/hilo'>Hilo</Link>)
+        },
+        {
+            key: '/handy2',
+            icon: <ToolOutlined />,
+            label: (<Link to='/handy2'>HandyTools</Link>)
         },
     ]
     let siderWidth = 200

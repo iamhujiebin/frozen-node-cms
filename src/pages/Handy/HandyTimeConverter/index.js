@@ -25,6 +25,11 @@ function HandyTimeConverter() {
             }
             }>Convert</Button>
             <Button onClick={() => {
+                const ts = window.wasmDateTimeConverter(value2)
+                setResult(ts)
+            }
+            }>ConvertDate</Button>
+            <Button onClick={() => {
                 setValue(Date.parse(new Date()) / 1000)
             }}>Reset</Button>
             <Divider plain orientation={"left"}>Result:</Divider>

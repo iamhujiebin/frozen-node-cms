@@ -57,6 +57,7 @@ function App() {
                         <Route path='svgavap' element={<SvgaVap/>}/>
                         <Route path='word' element={<Word/>}/>
                         <Route path='aiimage' element={<AiImage/>}/>
+                        <Route path='handy2' element={<Handy/>}/>
                     </Route>
                     <Route path='/login' element={<Login/>}/>
                     <Route path='/detail' element={<Detail/>}/>
