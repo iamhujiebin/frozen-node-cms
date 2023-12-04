@@ -11,9 +11,9 @@
 		return err;
 	};
 
-	if (!globalThis.fs) {
+	if (!window.fs) {
 		let outputBuf = "";
-		globalThis.fs = {
+		window.fs = {
 			constants: { O_WRONLY: -1, O_RDWR: -1, O_CREAT: -1, O_TRUNC: -1, O_APPEND: -1, O_EXCL: -1 }, // unused
 			writeSync(fd, buf) {
 				outputBuf += decoder.decode(buf);
@@ -58,8 +58,8 @@
 		};
 	}
 
-	if (!globalThis.process) {
-		globalThis.process = {
+	if (!window.process) {
+		window.process = {
 			getuid() { return -1; },
 			getgid() { return -1; },
 			geteuid() { return -1; },
@@ -73,26 +73,26 @@
 		}
 	}
 
-	if (!globalThis.crypto) {
-		throw new Error("globalThis.crypto is not available, polyfill required (crypto.getRandomValues only)");
+	if (!window.crypto) {
+		throw new Error("window.crypto is not available, polyfill required (crypto.getRandomValues only)");
 	}
 
-	if (!globalThis.performance) {
-		throw new Error("globalThis.performance is not available, polyfill required (performance.now only)");
+	if (!window.performance) {
+		throw new Error("window.performance is not available, polyfill required (performance.now only)");
 	}
 
-	if (!globalThis.TextEncoder) {
-		throw new Error("globalThis.TextEncoder is not available, polyfill required");
+	if (!window.TextEncoder) {
+		throw new Error("window.TextEncoder is not available, polyfill required");
 	}
 
-	if (!globalThis.TextDecoder) {
-		throw new Error("globalThis.TextDecoder is not available, polyfill required");
+	if (!window.TextDecoder) {
+		throw new Error("window.TextDecoder is not available, polyfill required");
 	}
 
 	const encoder = new TextEncoder("utf-8");
 	const decoder = new TextDecoder("utf-8");
 
-	globalThis.Go = class {
+	window.Go = class {
 		constructor() {
 			this.argv = ["js"];
 			this.env = {};
@@ -231,7 +231,7 @@
 						const fd = getInt64(sp + 8);
 						const p = getInt64(sp + 16);
 						const n = this.mem.getInt32(sp + 24, true);
-						fs.writeSync(fd, new Uint8Array(this._inst.exports.mem.buffer, p, n));
+						window.fs.writeSync(fd, new Uint8Array(this._inst.exports.mem.buffer, p, n));
 					},
 
 					// func resetMemoryDataView()
@@ -467,7 +467,7 @@
 				null,
 				true,
 				false,
-				globalThis,
+				window,
 				this,
 			];
 			this._goRefCounts = new Array(this._values.length).fill(Infinity); // number of references that Go has to a JS value, indexed by reference id
@@ -476,7 +476,7 @@
 				[null, 2],
 				[true, 3],
 				[false, 4],
-				[globalThis, 5],
+				[window, 5],
 				[this, 6],
 			]);
 			this._idPool = [];   // unused ids that have been garbage collected
