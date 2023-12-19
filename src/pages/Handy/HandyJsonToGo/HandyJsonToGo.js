@@ -10,6 +10,7 @@ const defaultCheckedList = ['inline', 'omitempty'];
 function HandyJsonToGo() {
     const [value, setValue] = useState('')
     const [result, setResult] = useState('')
+    const [typeName,setTypeName] = useState('')
     const tran = e=> {
         let inline = true
         let example = false
@@ -25,7 +26,11 @@ function HandyJsonToGo() {
                 omitempty= true
             }
         })
-        const res = jsonToGo(value, 'AutoGenerate', inline, example, omitempty)
+        let name = typeName
+        if (name.length <= 0) {
+            name = 'AutoGenerate'
+        }
+        const res = jsonToGo(value, name, inline, example, omitempty)
         setResult(res.go)
     }
 
@@ -44,9 +49,10 @@ function HandyJsonToGo() {
                 Check all
             </Checkbox>
             <CheckboxGroup options={plainOptions} value={checkedList} onChange={onChange} />
+            <Input style={{width:300}} placeholder={'typename'} value={typeName} onChange={e=>setTypeName(e.target.value)} />
             <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
-                <TextArea rows={30} value={value} onChange={(e) => setValue(e.target.value)}/>
-                <TextArea rows={30} value={result} onChange={(e) => setResult(e.target.value)}/>
+                <TextArea rows={28} value={value} onChange={(e) => setValue(e.target.value)}/>
+                <TextArea rows={28} value={result} onChange={(e) => setResult(e.target.value)}/>
             </div>
             <Button onClick={tran}>Encode</Button>
         </>
