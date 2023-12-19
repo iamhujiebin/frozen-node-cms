@@ -7,6 +7,7 @@ import HandyBase64 from "@/pages/Handy/HandyBase64";
 import HandyTimeConverter from "@/pages/Handy/HandyTimeConverter";
 import HandyQRCode from "@/pages/Handy/HandyQRCode";
 import HandyJsonToGo from "@/pages/Handy/HandyJsonToGo/HandyJsonToGo";
+import HandySqlToGo from "@/pages/Handy/HandySqlToGo/HandySqlToGo";
 
 const items = [
     {
@@ -37,7 +38,7 @@ const items = [
     {
         key: '6',
         label: 'Sql To Go',
-        children: <HandyJsonToGo/>
+        children: <HandySqlToGo/>
     }
 ];
 
@@ -53,7 +54,7 @@ function Handy() {
         })
     }, [])
     return (
-        <div style={{margin: 100, padding: 20, borderRadius: 10, backgroundColor: "#d7d4d4"}}>
+        <div style={{margin: 30, padding: 20, borderRadius: 10, backgroundColor: "#d7d4d4"}}>
             <Tabs defaultActiveKey="1" items={items}/>
         </div>
     )

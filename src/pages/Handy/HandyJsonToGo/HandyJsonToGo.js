@@ -1,17 +1,28 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Checkbox, Divider, Input} from 'antd';
 import {jsonToGo} from "@/assets/js/json-to-go";
-const { TextArea } = Input;
+import hljs from "highlight.js";
+
+const {TextArea} = Input;
 const CheckboxGroup = Checkbox.Group;
 
 const plainOptions = ['inline', 'example', 'omitempty'];
 const defaultCheckedList = ['inline', 'omitempty'];
 
 function HandyJsonToGo() {
+    // 初始话hljs
+    useEffect(() => {
+        document.querySelectorAll("pre").forEach(block => {
+            try {
+                hljs.highlightElement(block);
+            } catch (e) {
+            }
+        });
+    }, [])
     const [value, setValue] = useState('')
-    const [result, setResult] = useState('')
-    const [typeName,setTypeName] = useState('')
-    const tran = e=> {
+    const [html, setHtml] = useState('')
+    const [typeName, setTypeName] = useState('')
+    const tran = e => {
         let inline = true
         let example = false
         let omitempty = false
@@ -20,10 +31,10 @@ function HandyJsonToGo() {
                 inline = false
             }
             if (item === 'example') {
-                example= true
+                example = true
             }
             if (item === 'omitempty') {
-                omitempty= true
+                omitempty = true
             }
         })
         let name = typeName
@@ -31,7 +42,9 @@ function HandyJsonToGo() {
             name = 'AutoGenerate'
         }
         const res = jsonToGo(value, name, inline, example, omitempty)
-        setResult(res.go)
+        const v = hljs.highlightAuto(res.go).value
+        const h = "<pre><code>" + v + "</code></pre>"
+        setHtml(h)
     }
 
     const [checkedList, setCheckedList] = useState(defaultCheckedList);
@@ -48,14 +61,18 @@ function HandyJsonToGo() {
             <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>
                 Check all
             </Checkbox>
-            <CheckboxGroup options={plainOptions} value={checkedList} onChange={onChange} />
-            <Input style={{width:300}} placeholder={'typename'} value={typeName} onChange={e=>setTypeName(e.target.value)} />
-            <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
-                <TextArea rows={28} value={value} onChange={(e) => setValue(e.target.value)}/>
-                <TextArea rows={28} value={result} onChange={(e) => setResult(e.target.value)}/>
-            </div>
+            <CheckboxGroup options={plainOptions} value={checkedList} onChange={onChange}/>
+            <Input style={{width: 300}} placeholder={'typename'} value={typeName}
+                   onChange={e => setTypeName(e.target.value)}/>
+            {/*<div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>*/}
+            <TextArea rows={12} value={value} onChange={(e) => setValue(e.target.value)}/>
+            {/*<TextArea rows={28} value={result} onChange={(e) => setResult(e.target.value)}/>*/}
+            <div dangerouslySetInnerHTML={{__html: html}}></div>
+            {/*</div>*/}
+            <Divider/>
             <Button onClick={tran}>Encode</Button>
         </>
     )
 }
+
 export default HandyJsonToGo;
