@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {jsonToGo} from "@/assets/js/json-to-go";
+import {sqlToGo} from "@/assets/js/sql-to-go";
 import {Button, Input} from "antd";
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
@@ -10,7 +11,6 @@ const {TextArea} = Input;
 const Test = () => {
     const [value, setValue] = useState('')
     const [result, setResult] = useState('')
-    const [tri, setTri] = useState(0)
     useEffect(() => {
         hljs.registerLanguage('go', go)
         document.querySelectorAll("pre").forEach(block => {
@@ -23,16 +23,16 @@ const Test = () => {
     }, [result])
     const tran = e => {
         // 检查是否已经设置了dataset.highlighted属性
-        const res = jsonToGo(value, 'AutoGenerate', true, true, true)
+        // const res = jsonToGo(value, 'AutoGenerate', true, true, true)
+        const res = sqlToGo(value, {useGorm:1,useJson:1,useSqlx:1,useForm:1})
         setResult(res.go)
-        setTri(1)
     }
     return (
         <div>
             <TextArea rows={6} value={value} onChange={(e) => {
                 setValue(e.target.value)
             }}/>
-            {tri === 1 && (
+            {result.length > 0 && (
                 <div>
                 <pre id={'code-go'} className={'go'}>
                     <code>

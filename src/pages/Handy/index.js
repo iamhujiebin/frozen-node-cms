@@ -33,6 +33,11 @@ const items = [
         key: '5',
         label: 'Json To Go',
         children: <HandyJsonToGo/>
+    },
+    {
+        key: '6',
+        label: 'Sql To Go',
+        children: <HandyJsonToGo/>
     }
 ];
 
