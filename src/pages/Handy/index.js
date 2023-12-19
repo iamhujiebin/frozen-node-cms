@@ -6,6 +6,7 @@ import HandyURL from "@/pages/Handy/HandyURL";
 import HandyBase64 from "@/pages/Handy/HandyBase64";
 import HandyTimeConverter from "@/pages/Handy/HandyTimeConverter";
 import HandyQRCode from "@/pages/Handy/HandyQRCode";
+import HandyJsonToGo from "@/pages/Handy/HandyJsonToGo/HandyJsonToGo";
 
 const items = [
     {
@@ -27,6 +28,11 @@ const items = [
         key: '4',
         label: 'Generate QR Code',
         children: <HandyQRCode/>
+    },
+    {
+        key: '5',
+        label: 'Json To Go',
+        children: <HandyJsonToGo/>
     }
 ];
 
