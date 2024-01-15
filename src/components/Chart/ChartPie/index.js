@@ -1,4 +1,3 @@
-import * as echarts from 'echarts'
 import {Pie} from '@ant-design/charts';
 
 const data = [
@@ -32,16 +31,14 @@ const config = {
     data,
     angleField: 'value',
     colorField: 'type',
-    radius: 1,
-    // 设置圆弧起始角度
-    startAngle: Math.PI,
-    endAngle: Math.PI * 1.5,
+    radius: 0.9,
     label: {
         type: 'inner',
-        offset: '-8%',
-        content: '{name}',
+        offset: '-30%',
+        content: ({percent}) => `${(percent * 100).toFixed(0)}%`,
         style: {
-            fontSize: 18,
+            fontSize: 14,
+            textAlign: 'center',
         },
     },
     interactions: [
@@ -49,17 +46,12 @@ const config = {
             type: 'element-active',
         },
     ],
-    pieStyle: {
-        lineWidth: 0,
-    },
 };
 
 function ChartPie({todoForInputValues}) {
     return (
-        <div>
-            <div style={{height: 388, width: 388}}>
-                <Pie {...config} />
-            </div>
+        <div style={{height: 388, width: 388}}>
+            <Pie {...config} />
         </div>
     )
 }
