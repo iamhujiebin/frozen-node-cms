@@ -5,6 +5,8 @@ import ChartSankey from '@/components/Chart/ChartSankey'
 import ChartRadar from '@/components/Chart/ChartRadar'
 import ChartFunnel from '@/components/Chart/ChartFunnel'
 import ChartWordCloud from '@/components/Chart/ChartWordCloud'
+import ChartBar from '@/components/Chart/ChartBar'
+import ChartWaterfall from '@/components/Chart/ChartWaterfall'
 
 const Test = () => {
     return (
@@ -16,6 +18,8 @@ const Test = () => {
             <ChartRadar/>
             <ChartFunnel/>
             <ChartWordCloud/>
+            <ChartBar/>
+            <ChartWaterfall/>
         </div>
     );
 };
