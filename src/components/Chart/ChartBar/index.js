@@ -132,6 +132,9 @@ function ChartBar({todoForInputValues}) {
     return (
         <div style={{height: 388, width: 588}}>
             <Bar {...config} />
+            <div style={{textAlign: "center"}}>
+                代理充值占比
+            </div>
         </div>
     )
 }

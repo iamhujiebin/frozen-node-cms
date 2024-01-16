@@ -27,6 +27,9 @@ function ChartLine({todoForInputValues}) {
     return (
         <div style={{height: 388, width: 488}}>
             <Line {...config} />
+            <div style={{textAlign: "center"}}>
+                每天的DAU/每天的充值?
+            </div>
         </div>
     )
 }

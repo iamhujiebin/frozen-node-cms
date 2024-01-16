@@ -67,6 +67,9 @@ function ChartWaterfall({todoForInputValues}) {
     return (
         <div style={{height: 388, width: 588}}>
             <Waterfall {...config} />
+            <div style={{textAlign: "center"}}>
+                具体某个用户的钻石收入/支出占比
+            </div>
         </div>
     )
 }

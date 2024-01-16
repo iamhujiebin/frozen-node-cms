@@ -51,6 +51,9 @@ function ChartRadar({todoForInputValues}) {
     return (
         <div style={{height: 388, width: 388}}>
             <Radar {...config} />
+            <div style={{textAlign: "center"}}>
+                具体某用户的操作占比:游戏-房间-活动-充值-私聊
+            </div>
         </div>
     )
 }

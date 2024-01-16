@@ -52,6 +52,9 @@ function ChartPie({todoForInputValues}) {
     return (
         <div style={{height: 388, width: 388}}>
             <Pie {...config} />
+            <div style={{textAlign: "center"}}>
+                用户操作占比
+            </div>
         </div>
     )
 }

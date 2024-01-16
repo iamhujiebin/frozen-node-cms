@@ -85,6 +85,9 @@ function ChartSankey({todoForInputValues}) {
     return (
         <div style={{height: 388, width: 588}}>
             <Sankey {...config} />
+            <div style={{textAlign: "center"}}>
+                用户路径图
+            </div>
         </div>
     )
 }

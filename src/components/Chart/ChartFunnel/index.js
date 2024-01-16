@@ -33,6 +33,9 @@ function ChartFunnel({todoForInputValues}) {
     return (
         <div style={{height: 388, width: 388}}>
             <Funnel {...config} />
+            <div style={{textAlign: "center"}}>
+                漏斗图
+            </div>
         </div>
     )
 }

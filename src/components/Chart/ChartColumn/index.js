@@ -69,6 +69,9 @@ function ChartColumn({todoForInputValues}) {
     return (
         <div style={{height: 388, width: 588}}>
             <Column {...config} />
+            <div style={{textAlign: "center"}}>
+                各个国家的销售额
+            </div>
         </div>
     )
 }

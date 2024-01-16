@@ -426,6 +426,9 @@ function ChartWordCloud({todoForInputValues}) {
     return (
         <div style={{height: 388, width: 388}}>
             <WordCloud {...config} />
+            <div style={{textAlign: "center"}}>
+                搜索用户/房间热门词
+            </div>
         </div>
     )
 }

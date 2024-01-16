@@ -10,7 +10,7 @@ import ChartWaterfall from '@/components/Chart/ChartWaterfall'
 
 const Test = () => {
     return (
-        <div style={{display: "flex", flexWrap: "wrap"}}>
+        <div style={{display: "flex", flexWrap: "wrap", gap: '28px'}}>
             <ChartLine/>
             <ChartPie/>
             <ChartColumn/>
