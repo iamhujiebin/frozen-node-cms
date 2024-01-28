@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Checkbox, Divider, Input} from 'antd';
+import {Button, Checkbox, Divider, Input, message} from 'antd';
 import {jsonToGo} from "@/assets/js/json-to-go";
 import hljs from "highlight.js";
 
@@ -20,6 +20,7 @@ function HandyJsonToGo() {
         });
     }, [])
     const [value, setValue] = useState('')
+    const [result, setResult] = useState('')
     const [html, setHtml] = useState('')
     const [typeName, setTypeName] = useState('')
     const tran = e => {
@@ -42,6 +43,7 @@ function HandyJsonToGo() {
             name = 'AutoGenerate'
         }
         const res = jsonToGo(value, name, inline, example, omitempty)
+        setResult(res.go)
         const v = hljs.highlightAuto(res.go).value
         const h = "<pre><code>" + v + "</code></pre>"
         setHtml(h)
@@ -71,6 +73,9 @@ function HandyJsonToGo() {
             {/*</div>*/}
             <Divider/>
             <Button onClick={tran}>Encode</Button>
+            <Button onClick={() => navigator.clipboard.writeText(result).then(message.info('copied')).catch(e => {
+                message.error('copy fail')
+            })}>Copy</Button>
         </>
     )
 }
