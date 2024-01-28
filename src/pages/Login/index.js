@@ -63,18 +63,10 @@ const Login = () => {
                     >
                         <Input size='large' placeholder='请输入验证码'/>
                     </Form.Item>
-                    <Form.Item
-                        name='agreement'
-                        valuePropName="checked"
-                        rules={[
-                            {
-                                validator: (_, value) => value ? Promise.resolve() : Promise.reject(new Error('请同意协议'))
-                            }
-                        ]}
-                    >
-                        <p className='login-checkbox-label'>
+                    <Form.Item name='agreement'>
+                        <a className='login-checkbox-label' href="https://beian.miit.gov.cn/" target="_blank">
                             备案号：粤ICP备2024174505号-1
-                        </p>
+                        </a>
                     </Form.Item>
                     <Form.Item>
                         <Button type='primary' htmlType='submit' size='large' block>
