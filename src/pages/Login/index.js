@@ -72,9 +72,9 @@ const Login = () => {
                             }
                         ]}
                     >
-                        <Checkbox className='login-checkbox-label'>
-                            我已阅读并同意「用户协议」和「隐私条款」
-                        </Checkbox>
+                        <p className='login-checkbox-label'>
+                            备案号：粤ICP备2024174505号-1
+                        </p>
                     </Form.Item>
                     <Form.Item>
                         <Button type='primary' htmlType='submit' size='large' block>
