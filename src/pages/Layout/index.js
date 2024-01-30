@@ -64,6 +64,11 @@ const CMSLayout = () => {
             icon: <FormOutlined/>,
             label: (<Link to='/todo'>todolist</Link>),
         },
+        {
+            key: '/handy2',
+            icon: <ToolOutlined/>,
+            label: (<Link to='/handy2'>HandyTools</Link>)
+        }
         // {
         //     key: '/antddemo',
         //     icon: <FormOutlined/>,
