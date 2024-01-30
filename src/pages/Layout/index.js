@@ -14,7 +14,11 @@ import {
     WechatOutlined,
     FileWordOutlined,
     RedditOutlined,
-    ToolOutlined
+    ToolOutlined,
+    HomeOutlined,
+    DiffOutlined,
+    EditOutlined,
+    FormOutlined,
 } from '@ant-design/icons'
 import {Link, Outlet, useLocation, useNavigate} from 'react-router-dom'
 import {useStore} from '@/store'
@@ -24,12 +28,12 @@ import {isMobile} from 'react-device-detect'
 const {Header, Sider} = Layout
 
 const CMSLayout = () => {
-    const MenuList = [
-        // {
-        //     key: '/home',
-        //     label: (<Link to='/home'>数据概览</Link>),
-        //     icon: <HomeOutlined/>
-        // },
+    const [MenuList, setMenuList] = useState([
+        {
+            key: '/',
+            label: (<Link to='/'>数据概览</Link>),
+            icon: <HomeOutlined/>
+        },
         // {
         //     key: '/article',
         //     label: (<Link to='/article'>内容管理</Link>),
@@ -40,31 +44,6 @@ const CMSLayout = () => {
         //     icon: <EditOutlined/>,
         //     label: (<Link to='/publish'>发布文章</Link>),
         // },
-        // {
-        //     key: '/todo',
-        //     icon: <FormOutlined/>,
-        //     label: (<Link to='/todo'>todolist</Link>),
-        // },
-        // {
-        //     key: '/antddemo',
-        //     icon: <FormOutlined/>,
-        //     label: (<Link to='/antddemo'>antddemo</Link>)
-        // }
-        {
-            key: '/camera',
-            icon: <VideoCameraAddOutlined/>,
-            label: (<Link to='/camera'>连麦</Link>),
-        },
-        {
-            key: '/album',
-            icon: <InstagramOutlined/>,
-            label: (<Link to='/album'>相册</Link>),
-        },
-        {
-            key: '/',
-            icon: <RedditCircleFilled/>,
-            label: (<Link to='/'>ChatGPT</Link>),
-        },
         {
             key: '/music',
             icon: <ForwardOutlined/>,
@@ -81,21 +60,16 @@ const CMSLayout = () => {
             label: (<Link to='/word'>咒语生成器</Link>)
         },
         {
-            key: '/aiimage',
-            icon: <RedditOutlined/>,
-            label: (<Link to='/aiimage'>Ai生成图片</Link>)
+            key: '/todo',
+            icon: <FormOutlined/>,
+            label: (<Link to='/todo'>todolist</Link>),
         },
-        {
-            key: '/hilo',
-            icon: <WechatOutlined/>,
-            label: (<Link to='/hilo'>Hilo</Link>)
-        },
-        {
-            key: '/handy2',
-            icon: <ToolOutlined />,
-            label: (<Link to='/handy2'>HandyTools</Link>)
-        },
-    ]
+        // {
+        //     key: '/antddemo',
+        //     icon: <FormOutlined/>,
+        //     label: (<Link to='/antddemo'>antddemo</Link>)
+        // }
+    ])
     let siderWidth = 200
     let initCollapsed = false
     if (isMobile) {
@@ -113,6 +87,53 @@ const CMSLayout = () => {
     }
     useEffect(() => {
         userStore.getUserInfo().then(r => {
+            if (userStore.userInfo.name === 'Frozen') {
+                setMenuList([{
+                    key: '/camera',
+                    icon: <VideoCameraAddOutlined/>,
+                    label: (<Link to='/camera'>连麦</Link>),
+                },
+                    {
+                        key: '/album',
+                        icon: <InstagramOutlined/>,
+                        label: (<Link to='/album'>相册</Link>),
+                    },
+                    {
+                        key: '/chatgpt',
+                        icon: <RedditCircleFilled/>,
+                        label: (<Link to='/chatgpt'>ChatGPT</Link>),
+                    },
+                    {
+                        key: '/music',
+                        icon: <ForwardOutlined/>,
+                        label: (<Link to='/music'>音乐馆</Link>)
+                    },
+                    {
+                        key: '/svgavap',
+                        icon: <PlayCircleOutlined/>,
+                        label: (<Link to='/svgavap'>SVGA-VAP</Link>)
+                    },
+                    {
+                        key: '/word',
+                        icon: <FileWordOutlined/>,
+                        label: (<Link to='/word'>咒语生成器</Link>)
+                    },
+                    {
+                        key: '/aiimage',
+                        icon: <RedditOutlined/>,
+                        label: (<Link to='/aiimage'>Ai生成图片</Link>)
+                    },
+                    {
+                        key: '/hilo',
+                        icon: <WechatOutlined/>,
+                        label: (<Link to='/hilo'>Hilo</Link>)
+                    },
+                    {
+                        key: '/handy2',
+                        icon: <ToolOutlined/>,
+                        label: (<Link to='/handy2'>HandyTools</Link>)
+                    }])
+            }
         }).catch(e => {
             alert(e)
         })
