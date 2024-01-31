@@ -22,6 +22,7 @@ import Word from "@/pages/Word";
 import AiImage from "@/pages/AiImage";
 import Test2 from "@/pages/Test2";
 import Handy from "@/pages/Handy";
+import HiloDashboard from "@/pages/HiloDashboard";
 
 const Detail = lazy(() => import("@/pages/Detail"))
 const Login = lazy(() => import('@/pages/Login'))
@@ -58,6 +59,7 @@ function App() {
                         <Route path='word' element={<Word/>}/>
                         <Route path='aiimage' element={<AiImage/>}/>
                         <Route path='handy2' element={<Handy/>}/>
+                        <Route path='hiloDashboard' element={<HiloDashboard/>}/>
                     </Route>
                     <Route path='/login' element={<Login/>}/>
                     <Route path='/detail' element={<Detail/>}/>

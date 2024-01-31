@@ -19,6 +19,7 @@ import {
     DiffOutlined,
     EditOutlined,
     FormOutlined,
+    DashboardOutlined,
 } from '@ant-design/icons'
 import {Link, Outlet, useLocation, useNavigate} from 'react-router-dom'
 import {useStore} from '@/store'
@@ -76,10 +77,12 @@ const CMSLayout = () => {
         // }
     ])
     let siderWidth = 200
+    let collapsedWidth = 60
     let initCollapsed = false
     if (isMobile) {
         siderWidth = 60
         initCollapsed = true
+        collapsedWidth = 0
     }
     const location = useLocation()
     const selectedKey = location.pathname
@@ -93,11 +96,12 @@ const CMSLayout = () => {
     useEffect(() => {
         userStore.getUserInfo().then(r => {
             if (userStore.userInfo.name === 'Frozen') {
-                setMenuList([{
-                    key: '/camera',
-                    icon: <VideoCameraAddOutlined/>,
-                    label: (<Link to='/camera'>连麦</Link>),
-                },
+                setMenuList([
+                    {
+                        key: '/camera',
+                        icon: <VideoCameraAddOutlined/>,
+                        label: (<Link to='/camera'>连麦</Link>),
+                    },
                     {
                         key: '/album',
                         icon: <InstagramOutlined/>,
@@ -137,7 +141,13 @@ const CMSLayout = () => {
                         key: '/handy2',
                         icon: <ToolOutlined/>,
                         label: (<Link to='/handy2'>HandyTools</Link>)
-                    }])
+                    },
+                    {
+                        key: '/hiloDashboard',
+                        icon: <DashboardOutlined/>,
+                        label: (<Link to='/hiloDashboard'>Dashboard</Link>)
+                    }
+                ])
             }
         }).catch(e => {
             alert(e)
@@ -238,7 +248,7 @@ const CMSLayout = () => {
                     width={siderWidth}
                     collapsible
                     collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}
-                    collapsedWidth="0" // 这里是折叠后特殊样式
+                    collapsedWidth={collapsedWidth} // 这里是折叠后特殊样式
                     zeroWidthTriggerStyle={{
                         right: "-60px",
                         bottom: "-15px",
