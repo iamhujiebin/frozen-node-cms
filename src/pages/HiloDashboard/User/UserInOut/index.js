@@ -1,6 +1,9 @@
 import {Waterfall} from '@ant-design/plots';
+import {useEffect, useState} from "react";
+import {httpMgr} from "@/utils/http_hilo";
+import {message} from "antd";
 
-const data = [
+const initData = [
     {
         type: '赛车奖励',
         diamond: 120,
@@ -30,41 +33,55 @@ const data = [
         diamond: -2000,
     },
 ];
-const config = {
-    data,
-    xField: 'type',
-    yField: 'diamond',
-    meta: {
-        type: {
-            alias: '类别',
-        },
-        diamond: {
-            alias: '收支',
-            formatter: (v) => `${v}`,
-        },
-    },
-    animation: {
-        appear: {
-            animation: 'scale-in-y',
-            duration: 2000,
-        },
-    },
-    label: {
-        // 可手动配置 label 数据标签位置
-        position: 'middle',
-    },
-    total: {
-        label: '总支出',
-        style: {
-            fill: '#0536fa',
-        },
-    },
-};
+
 
 function UserInOut({code}) {
+    const [data, setData] = useState(initData)
+    useEffect(() => {
+        asyncFetch();
+    }, [code])
+    const asyncFetch = () => {
+        if (code?.length > 0) {
+            httpMgr("/v1/dashboard/user/consume?code=" + code).then(res => {
+                setData(res.data)
+            }).catch(e => {
+                message.error(e)
+            })
+        }
+    };
+    const config = {
+        data,
+        xField: 'type',
+        yField: 'diamond',
+        meta: {
+            type: {
+                alias: '类别',
+            },
+            diamond: {
+                alias: '收支',
+                formatter: (v) => `${v}`,
+            },
+        },
+        animation: {
+            appear: {
+                animation: 'scale-in-y',
+                duration: 2000,
+            },
+        },
+        label: {
+            // 可手动配置 label 数据标签位置
+            position: 'middle',
+        },
+        total: {
+            label: '总支出',
+            style: {
+                fill: '#0536fa',
+            },
+        },
+    };
     return (
         <div>
-            <Waterfall {...config} style={{height: 388, width: 688}}/>
+            <Waterfall {...config} style={{height: 1088, width: 1488}}/>
             <div style={{textAlign: "center"}}>
                 <strong>
                     用户{code}黄钻收入/支出

@@ -16,8 +16,8 @@ const User = () => {
                 width: 388,
             }}/>
             <div style={{display: "flex", flexWrap: "wrap", gap: '28px'}}>
-                <UserEvent code={code}/>
                 <UserInOut code={code}/>
+                <UserEvent code={code}/>
             </div>
         </>
     );
