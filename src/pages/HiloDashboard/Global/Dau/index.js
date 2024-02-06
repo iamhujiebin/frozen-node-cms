@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Column} from '@ant-design/plots';
+import {httpMgr} from "@/utils/http_hilo";
+import {message} from "antd";
 
 const initData = [
     {
@@ -47,12 +49,11 @@ const Dau = () => {
     }, []);
 
     const asyncFetch = () => {
-        // fetch('https://gw.alipayobjects.com/os/bmw-prod/e00d52f4-2fa6-47ee-a0d7-105dd95bde20.json')
-        //     .then((response) => response.json())
-        //     .then((json) => setData(json))
-        //     .catch((error) => {
-        //         console.log('fetch data failed', error);
-        //     });
+        httpMgr("/v1/dashboard/day/user").then(res => {
+            setData(res.data)
+        }).catch(e => {
+            message.error(e)
+        })
     };
     const config = {
         data,
@@ -88,7 +89,7 @@ const Dau = () => {
 
     return (
         <div>
-            <Column {...config} style={{height: 388, width: 488}}/>
+            <Column {...config} style={{height: 388, width: 1588}}/>
             <div style={{textAlign: "center"}}>
                 <strong>
                     日活

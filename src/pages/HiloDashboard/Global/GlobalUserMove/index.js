@@ -1,5 +1,7 @@
 import {Pie} from '@ant-design/charts';
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {httpMgr} from "@/utils/http_hilo";
+import {message} from "antd";
 
 const initData = [
     {
@@ -31,6 +33,16 @@ const initData = [
 
 function GlobalUserMove({todoForInputValues}) {
     const [data, setData] = useState(initData)
+    useEffect(() => {
+        asyncFetch();
+    }, [])
+    const asyncFetch = () => {
+        httpMgr("/v1/dashboard/day/move").then(res => {
+            setData(res.data)
+        }).catch(e => {
+            message.error(e)
+        })
+    };
     const config = {
         data,
         appendPadding: 10,
@@ -54,7 +66,7 @@ function GlobalUserMove({todoForInputValues}) {
     };
     return (
         <div>
-            <Pie {...config} style={{height: 388, width: 488}}/>
+            <Pie {...config} style={{height: 488, width: 888}}/>
             <div style={{textAlign: "center"}}>
                 <strong>
                     用户操作占比
