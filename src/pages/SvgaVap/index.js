@@ -73,6 +73,7 @@ function SvgaVap() {
                 .then(buffer => {
                     const data = new DataView(buffer);
                     config = readVapc(data)
+                    console.log("vapc:", config)
                     let source2 = {}
                     let color = ""
                     if (config?.src?.length > 0) {
@@ -109,34 +110,77 @@ function SvgaVap() {
 
         }
     }
-    const onFile = (e) => {
+    const onFileSvga = e => {
+        svgaParser.current = new SVGA.Parser()
+        svgaPlayer.current = new SVGA.Player('#demoCanvas')
+        let file = e.target.files[0];
+        let fileReader = new FileReader();
+
+        fileReader.onload = function (e) {
+            let dataUrl = e.target.result;
+            svgaParser.current.load(dataUrl, function (videoItem) {
+                svgaPlayer?.current?.setVideoItem(videoItem)
+                svgaPlayer?.current?.startAnimation()
+                setLoading(false)
+            }, function (e) {
+                message.error("svga err:" + e)
+                setLoading(false)
+            })
+        };
+        fileReader.readAsDataURL(file); // 读取成url
+    }
+    const onFileMp4 = (e) => {
         const file = e.target.files[0];
         const fileReader = new FileReader();
 
-        fileReader.onload = function () {
-            const arrayBuffer = fileReader.result;
-            arrayBuffer.fileStart = 0
-
-            let mp4box = MP4Box.createFile()
-            mp4box.onError = function (e) {
-                console.log("err:", e)
-            };
-            mp4box.onReady = function (info) {
-                console.log("info:", info)
-            };
-            mp4box.onMoovStart = function () {
-                console.log("Starting to receive File Information");
+        fileReader.onload = function (e) {
+            let arrayBuffer = e.target.result;
+            const data = new DataView(arrayBuffer);
+            let config = readVapc(data)
+            console.log("vapc:", config)
+            let source2 = {}
+            let color = ""
+            if (config?.src?.length > 0) {
+                config.src.map(item => {
+                    if (item.srcType === "img") {
+                        source2[item.srcTag] = man
+                    }
+                    if (item.srcType === "txt") {
+                        source2[item.srcTag] = "jiebin"
+                        color = item.color ? item.color : 'white'
+                    }
+                })
             }
-            mp4box.appendBuffer(arrayBuffer)
-            mp4box.flush()
+            const fileReader2 = new FileReader();
+            fileReader2.onload = function (e) {
+                const dataUrl = e.target.result;
+                let vap = new Vap().play(Object.assign({}, {
+                    container: vapPlayer.current,
+                    src: dataUrl,
+                    config: config,
+                    loop: true,
+                    beginPoint: 0,
+                    accurate: true,
+                    width: config?.info?.w ? config.info.w : 100,
+                    height: config?.info?.h ? config.info.h : 100,
+                    onLoadError: vapLoadError,
+                    fontStyle: {color: color},
+                }, source2)).on('ended', () => {
+                    console.log('play ended')
+                })
+                setLoading(false)
+            }
+            fileReader2.readAsDataURL(file);
         };
 
         fileReader.readAsArrayBuffer(file);
     }
     return (
         <div>
-            <input onChange={onFile} ref={inputFile} type="file"/>
-            <p>console查看文件信息</p>
+            <input onChange={onFileSvga} ref={inputFile} type="file"/>
+            <p>本地svga</p>
+            <input onChange={onFileMp4} ref={inputFile} type="file"/>
+            <p>本地mp4,console查看文件信息</p>
             <Row justify='center' type='flex'>
                 <Col>
                     <Select
