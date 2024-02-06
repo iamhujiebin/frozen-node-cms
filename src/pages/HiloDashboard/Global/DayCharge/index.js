@@ -89,7 +89,7 @@ const DayCharge = () => {
 
     return (
         <div>
-            <Line {...config} style={{height: 388, width: 1588}}/>
+            <Line {...config} className={"dashboard-chart"}/>
             <div style={{textAlign: "center"}}>
                 <strong>
                     日充

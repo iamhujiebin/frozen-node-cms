@@ -49,9 +49,10 @@ function HotWord({todoForInputValues}) {
         colorField: 'name',
         wordStyle: {
             fontFamily: 'Verdana',
-            fontSize: [8, 32],
-            rotation: 0,
+            fontSize: [16, 64],
+            // rotation: 0,
         },
+        imageMask: "https://api.frozenhu.cn/uploads/file/hilo.png",
         // 返回值设置成一个 [0, 1) 区间内的值，
         // 可以让每次渲染的位置相同（前提是每次的宽高一致）。
         random: () => 0.5,
@@ -62,8 +63,8 @@ function HotWord({todoForInputValues}) {
         ],
     };
     return (
-        <div>
-            <WordCloud {...config} style={{height: 288, width: 488}}/>
+        <div className={"dashboard-chart"}>
+            <WordCloud {...config}/>
             <div style={{textAlign: "center"}}>
                 <strong>
                     搜索用户/房间热门词

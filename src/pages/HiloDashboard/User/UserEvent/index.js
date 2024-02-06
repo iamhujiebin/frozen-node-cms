@@ -65,8 +65,8 @@ function UserEvent({code}) {
         area: {},
     };
     return (
-        <div>
-            <Radar {...config} style={{height: 688, width: 688}}/>
+        <div className={"dashboard-chart"}>
+            <Radar {...config}/>
             <div style={{textAlign: "center"}}>
                 <strong>
                     用户{code}的操作占比

@@ -80,8 +80,8 @@ function UserInOut({code}) {
         },
     };
     return (
-        <div>
-            <Waterfall {...config} style={{height: 1088, width: 1488}}/>
+        <div className={"dashboard-chart"}>
+            <Waterfall {...config} />
             <div style={{textAlign: "center"}}>
                 <strong>
                     用户{code}黄钻收入/支出

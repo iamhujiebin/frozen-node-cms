@@ -65,8 +65,8 @@ function GlobalUserMove({todoForInputValues}) {
         ],
     };
     return (
-        <div>
-            <Pie {...config} style={{height: 488, width: 888}}/>
+        <div className={"dashboard-chart"}>
+            <Pie {...config}/>
             <div style={{textAlign: "center"}}>
                 <strong>
                     用户操作占比

@@ -88,8 +88,8 @@ const Dau = () => {
     };
 
     return (
-        <div>
-            <Column {...config} style={{height: 388, width: 1588}}/>
+        <div className={"dashboard-chart"}>
+            <Column {...config}/>
             <div style={{textAlign: "center"}}>
                 <strong>
                     日活

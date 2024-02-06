@@ -1,3 +1,4 @@
+import "./index.css"
 import React from 'react';
 import {Tabs} from "antd";
 import Global from "@/pages/HiloDashboard/Global";
