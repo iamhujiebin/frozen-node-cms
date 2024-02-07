@@ -60,7 +60,9 @@ const DayCharge = () => {
 
     const asyncFetch = () => {
         httpMgr("/v1/dashboard/day/charge").then(res => {
-            setData(res.data)
+            if (res.data) {
+                setData(res.data)
+            }
         }).catch(e => {
             message.error(e)
         })

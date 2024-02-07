@@ -38,7 +38,9 @@ function GlobalUserMove({todoForInputValues}) {
     }, [])
     const asyncFetch = () => {
         httpMgrTest("/v1/dashboard/day/move").then(res => {
-            setData(res.data)
+            if (res.data) {
+                setData(res.data)
+            }
         }).catch(e => {
             message.error(e)
         })

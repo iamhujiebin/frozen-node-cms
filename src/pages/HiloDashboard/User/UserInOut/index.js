@@ -43,7 +43,9 @@ function UserInOut({code}) {
     const asyncFetch = () => {
         if (code?.length > 0) {
             httpMgr("/v1/dashboard/user/consume?code=" + code).then(res => {
-                setData(res.data)
+                if (res.data) {
+                    setData(res.data)
+                }
             }).catch(e => {
                 message.error(e)
             })
