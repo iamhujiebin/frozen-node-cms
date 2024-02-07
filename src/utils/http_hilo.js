@@ -67,5 +67,35 @@ httpMgr.interceptors.response.use((response) => {
     return Promise.reject(error) // 会throw error，可以被catch到
 })
 
+const httpMgrTest = axios.create({
+    baseURL: "http://43.135.4.137:8088",
+    timeout: 100000,
+})
 
-export {httpHilo, httpMgr}
+// 请求拦截器
+// config: http的config
+httpMgrTest.interceptors.request.use((config) => {
+    let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOjEsIkV4dGVybmFsSWQiOiIiLCJleHAiOjEwMzQ3MjkwNTYzfQ.kboxDAwspZwsgqmomv_SM2JyNbVIc-82gkpxZK-rwNk"
+    if (token) {
+        config.headers.token = `${token}`
+        config.headers.nonce = `hilo`
+    }
+    return config
+}, (error) => {
+    return Promise.reject(error)
+})
+
+httpMgrTest.interceptors.response.use((response) => {
+    if (response.data.code !== 200) {
+        return Promise.reject(response.data.message)
+    }
+    return response.data
+}, (error) => {
+    if (error.response.status === 401) {
+        console.log('401:', error.response)
+        alert("token miss")
+    }
+    return Promise.reject(error) // 会throw error，可以被catch到
+})
+
+export {httpHilo, httpMgr, httpMgrTest}
