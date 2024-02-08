@@ -1,6 +1,6 @@
 import {Pie} from '@ant-design/charts';
 import {useEffect, useState} from "react";
-import {httpMgr, httpMgrTest} from "@/utils/http_hilo";
+import {httpMgr} from "@/utils/http_hilo";
 import {message} from "antd";
 
 const initData = [
@@ -37,7 +37,7 @@ function GlobalUserMove({todoForInputValues}) {
         asyncFetch();
     }, [])
     const asyncFetch = () => {
-        httpMgrTest("/v1/dashboard/day/move").then(res => {
+        httpMgr("/v1/dashboard/day/move").then(res => {
             if (res.data) {
                 setData(res.data)
             }

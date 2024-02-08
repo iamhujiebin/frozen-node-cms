@@ -1,6 +1,6 @@
 import {Radar} from "@ant-design/plots";
 import {useEffect, useState} from "react";
-import {httpMgr, httpMgrTest} from "@/utils/http_hilo";
+import {httpMgr} from "@/utils/http_hilo";
 import {message} from "antd";
 
 const initData = [
@@ -29,7 +29,7 @@ function UserEvent({code}) {
     }, [code])
     const asyncFetch = () => {
         if (code?.length > 0) {
-            httpMgrTest("/v1/dashboard/user/move?code=" + code).then(res => {
+            httpMgr("/v1/dashboard/user/move?code=" + code).then(res => {
                 if (res.data) {
                     setData(res.data)
                 }
