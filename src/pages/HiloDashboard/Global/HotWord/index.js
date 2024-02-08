@@ -37,7 +37,9 @@ function HotWord({todoForInputValues}) {
     }, [])
     const asyncFetch = () => {
         httpMgr("/v1/dashboard/day/hot").then(res => {
-            setData(res.data)
+            if (res.data) {
+                setData(res.data)
+            }
         }).catch(e => {
             message.error(e)
         })

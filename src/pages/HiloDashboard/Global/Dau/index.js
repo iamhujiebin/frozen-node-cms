@@ -50,7 +50,9 @@ const Dau = () => {
 
     const asyncFetch = () => {
         httpMgr("/v1/dashboard/day/user").then(res => {
-            setData(res.data)
+            if (res.data) {
+                setData(res.data)
+            }
         }).catch(e => {
             message.error(e)
         })

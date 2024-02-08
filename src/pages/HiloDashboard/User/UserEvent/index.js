@@ -29,8 +29,10 @@ function UserEvent({code}) {
     }, [code])
     const asyncFetch = () => {
         if (code?.length > 0) {
-            httpMgrTest("/v1/dashboard/user/move?code=" + code).then(res => {
-                setData(res.data)
+            httpMgr("/v1/dashboard/user/move?code=" + code).then(res => {
+                if (res.data) {
+                    setData(res.data)
+                }
             }).catch(e => {
                 message.error(e)
             })
